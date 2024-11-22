@@ -2,39 +2,54 @@
 import { Request, Response } from 'express'
 import { ProductService } from './product.service'
 
-const createProducts = async (req: Request, res: Response) => {
-  const productData = req.body
-  const result = await ProductService.createProduct(productData)
-  if (result) {
-    res.status(201).json({
-      message: 'Product created successfully',
-      success: true,
-      data: result,
+const createNewProducts = async (req: Request, res: Response) => {
+  try {
+    const productData = req.body
+    const result = await ProductService.createProductsfromDB(productData)
+
+    if (result) {
+      res.status(201).json({
+        message: 'Product created successfully',
+        success: true,
+        data: result,
+      })
+    }
+
+    // In case the service does not return a result
+    res.status(500).json({
+      message: 'Failed to create product',
+      success: false,
+      
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'An error occurred while adding the product',
+      success: false,
+      error,
     })
   }
 }
+
 const GetallProducts = async (req: Request, res: Response) => {
   try {
     const productData = req.query
 
     // Retrieve products based on query parameters
-    const products = await ProductService.getAllProducts(productData)
+    const products = await ProductService.getAllProductsfromDB(productData)
     // Success response
-    if(!products || products.length === 0) {
+    if (!products || products.length === 0) {
       res.status(404).json({
         message: 'Products Not Found ',
         success: false,
         data: [],
       })
-    }
-    else {
+    } else {
       res.json({
         message: 'Products retrieved Successfully ',
         success: true,
         data: products,
       })
     }
-
   } catch (error) {
     // Handle unexpected errors
     res.status(500).json({
@@ -45,9 +60,9 @@ const GetallProducts = async (req: Request, res: Response) => {
   }
 }
 
-const getSpecificProduct = async (req: Request, res: Response) => {
+const getProductByID = async (req: Request, res: Response) => {
   try {
-    const product = await ProductService.getProductById(req.params.productId)
+    const product = await ProductService.getProductByIdfromDB(req.params.productId)
     if (product) {
       res.status(200).json({
         message: 'Product retrieved successfully',
@@ -59,39 +74,61 @@ const getSpecificProduct = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'An error occurred while retrieving product',
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error
     })
   }
 }
 
 const updateProduct = async (req: Request, res: Response) => {
-  const productData = req.body
-  const productId = req.params.productId
-  const result = await ProductService.updateProductById(productId, productData)
-  if (result) {
-    res.status(200).json({
-      message: 'Product updated successfully',
-      success: true,
-      data: result,
+  try {
+    const productData = req.body
+    const productId = req.params.productId
+    const result = await ProductService.updateProductByIdfromDB(
+      productId,
+      productData
+    )
+    if (result) {
+      res.status(200).json({
+        message: 'Product updated successfully',
+        success: true,
+        data: result,
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'An error occurred while updating product',
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     })
   }
 }
 
-// const GetProducts = (req: Request, res: Response) => {
-//     const { searchTerm } = req.query;
-//     if(!searchTerm){
-//         Products.find();
-//         res.json({
-//             "message": "All products fetched successfully",
-//             "success": true,
-//             "data":
-//         })
-//     }
-// }
+const deleteProductbyID = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId
+    const result = await ProductService.deleteProductByIdfromDB(productId)
+    if (result) {
+      res.status(200).json({
+        message: 'Product deleted successfully',
+        success: true,
+        data: result,
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'An error occurred while deleting product',
+      success: false,
+      error: error instanceof Error? error.message : 'Unknown error',
+    })
+  }
+}
+
 
 export const productController = {
-  createProducts,
+  createNewProducts,
   GetallProducts,
-  getSpecificProduct,
+  getProductByID,
   updateProduct,
+  deleteProductbyID
+
 }

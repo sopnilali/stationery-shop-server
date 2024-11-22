@@ -6,6 +6,7 @@ import express, {
 } from 'express'
 import cors from 'cors'
 import productRouter from './modules/products/product.router'
+import orderRouter from './modules/orders/order.router'
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(cors())
 
 // routes
 app.use('/api/', productRouter)
+app.use('/api/', orderRouter)
 
 // home routes
 app.get('/', (req: Request, res: Response) => {
@@ -26,15 +28,15 @@ app.get('/', (req: Request, res: Response) => {
 
 // error handling middleware start
 
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
-  const error = new Error(`Could not found ${req.url}`)
-  res.status(404)
-  res.json({
-    status: false,
-    message: error.message,
-  })
-  next(error)
-})
+// app.all('*', (req: Request, res: Response, next: NextFunction) => {
+//   const error = new Error(`Could not found ${req.url}`)
+//   res.status(404)
+//   res.json({
+//     status: false,
+//     message: error.message,
+//   })
+//   next(error)
+// })
 
 app.use(
   (

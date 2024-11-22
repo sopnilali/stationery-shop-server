@@ -14,27 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const product_model_1 = __importDefault(require("./product.model"));
-const createProduct = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createProductsfromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.create(payload);
     return result;
 });
-const getAllProducts = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllProductsfromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.find(query);
     return result;
 });
-const getProductById = (productid) => __awaiter(void 0, void 0, void 0, function* () {
+const getProductByIdfromDB = (productid) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.findById(productid);
     return result;
 });
-const updateProductById = (productid, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const updateProductByIdfromDB = (productid, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.findByIdAndUpdate(productid, payload, {
         new: true,
     });
     return result;
 });
+const deleteProductByIdfromDB = (productid) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.findByIdAndDelete(productid);
+    return result;
+});
 exports.ProductService = {
-    createProduct,
-    getAllProducts,
-    getProductById,
-    updateProductById,
+    createProductsfromDB,
+    getAllProductsfromDB,
+    getProductByIdfromDB,
+    updateProductByIdfromDB,
+    deleteProductByIdfromDB,
 };

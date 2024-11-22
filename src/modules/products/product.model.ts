@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose'
+import { productInterface } from './product.interface'
 
 const ProductSchema = new Schema({
   name: { type: String, required: true },
@@ -12,6 +13,6 @@ const ProductSchema = new Schema({
   updatedAt: { type: Date, default: Date.now },
 })
 
-const Products = model('products', ProductSchema)
+const Products = model<productInterface>('products', ProductSchema)
 
 export default Products
