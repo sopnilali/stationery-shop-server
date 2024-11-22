@@ -28,11 +28,20 @@ const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         // Retrieve products based on query parameters
         const products = yield product_service_1.ProductService.getAllProducts(productData);
         // Success response
-        res.status(200).json({
-            message: 'Products retrieved successfully',
-            success: true,
-            data: products,
-        });
+        if (!products || products.length === 0) {
+            res.status(404).json({
+                message: 'Products Not Found ',
+                success: false,
+                data: [],
+            });
+        }
+        else {
+            res.json({
+                message: 'Products retrieved Successfully ',
+                success: true,
+                data: products,
+            });
+        }
     }
     catch (error) {
         // Handle unexpected errors
