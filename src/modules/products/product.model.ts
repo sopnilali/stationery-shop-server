@@ -4,7 +4,14 @@ import { productInterface } from './product.interface'
 const ProductSchema = new Schema({
   name: { type: String, required: true },
   brand: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: {
+     type: Number,
+      required: true,
+      validate: {
+        validator: (value: number) => value > 0,
+        message: 'Price must be a positive number',
+      }
+    },
   category: { type: String, required: true },
   description: { type: String, required: true },
   quantity: { type: Number, required: true },

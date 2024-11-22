@@ -33,6 +33,7 @@ const createNewProducts = (req, res) => __awaiter(void 0, void 0, void 0, functi
             message: 'An error occurred while adding the product',
             success: false,
             error,
+            stack: "An error occurred while adding the product"
         });
     }
 });

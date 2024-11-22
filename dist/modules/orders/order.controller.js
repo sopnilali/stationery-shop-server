@@ -19,7 +19,7 @@ const order_model_1 = __importDefault(require("./order.model"));
 const order_service_1 = require("./order.service");
 const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const order = req.body;
-    const { email, productId, quantity, totalPrice } = order;
+    const { email, product: productId, quantity, totalPrice } = order;
     const product = yield product_model_1.default.findById(productId);
     if (!(product === null || product === void 0 ? void 0 : product.quantity)) {
         return res.status(404).json({

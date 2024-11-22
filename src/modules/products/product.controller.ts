@@ -26,6 +26,8 @@ const createNewProducts = async (req: Request, res: Response) => {
       message: 'An error occurred while adding the product',
       success: false,
       error,
+      stack: "An error occurred while adding the product"
+      
     })
   }
 }

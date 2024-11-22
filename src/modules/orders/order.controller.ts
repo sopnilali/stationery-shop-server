@@ -7,7 +7,7 @@ import { OrderService } from './order.service'
 
 const createOrders = async (req: Request, res: Response) : Promise< any> => {
     const order = req.body
-    const { email, productId, quantity, totalPrice } = order
+    const { email, product: productId, quantity, totalPrice } = order
     const product = await Products.findById(productId)
 
     if (!product?.quantity) {
