@@ -8,9 +8,11 @@ const ProductSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
         validate: {
-            validator: (value) => value > 0,
-            message: 'Price must be a positive number',
-        }
+            validator: function (value) {
+                return value >= 0; // Ensure price is non-negative
+            },
+            message: 'Price must be a positive number', // Custom error message
+        },
     },
     category: { type: String, required: true },
     description: { type: String, required: true },

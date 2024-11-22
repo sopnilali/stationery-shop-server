@@ -22,15 +22,15 @@ app.get('/', (req, res) => {
     });
 });
 // error handling middleware start
-// app.all('*', (req: Request, res: Response, next: NextFunction) => {
-//   const error = new Error(`Could not found ${req.url}`)
-//   res.status(404)
-//   res.json({
-//     status: false,
-//     message: error.message,
-//   })
-//   next(error)
-// })
+app.all('*', (req, res, next) => {
+    const error = new Error(`Could not found ${req.url}`);
+    res.status(404);
+    res.json({
+        status: false,
+        message: error.message,
+    });
+    next(error);
+});
 app.use((err, req, res, next) => {
     res.status(500).json({
         status: false,

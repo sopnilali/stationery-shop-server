@@ -1,6 +1,7 @@
 //req and response from hit use
 import { Request, Response } from 'express'
 import { ProductService } from './product.service'
+import { Error } from 'mongoose'
 
 const createNewProducts = async (req: Request, res: Response) => {
   try {
@@ -11,7 +12,18 @@ const createNewProducts = async (req: Request, res: Response) => {
       res.status(201).json({
         message: 'Product created successfully',
         success: true,
-        data: result,
+        data: {
+          _id: result._id,
+          name: result.name,
+          brand: result.brand,
+          price: result.price,
+          description: result.description,
+          quantity: result.quantity,
+          category: result.category,
+          inStock: result.inStock,
+          createdAt: result.createdAt,
+          updatedAt: result.updatedAt,
+        },
       })
     }
 
@@ -19,15 +31,13 @@ const createNewProducts = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'Failed to create product',
       success: false,
-      
     })
   } catch (error) {
     res.status(500).json({
       message: 'An error occurred while adding the product',
       success: false,
       error,
-      stack: "An error occurred while adding the product"
-      
+      stack: new Error('Something went wrong'),
     })
   }
 }
@@ -57,14 +67,16 @@ const GetallProducts = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'An error occurred while retrieving products',
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error,
     })
   }
 }
 
 const getProductByID = async (req: Request, res: Response) => {
   try {
-    const product = await ProductService.getProductByIdfromDB(req.params.productId)
+    const product = await ProductService.getProductByIdfromDB(
+      req.params.productId
+    )
     if (product) {
       res.status(200).json({
         message: 'Product retrieved successfully',
@@ -76,7 +88,7 @@ const getProductByID = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'An error occurred while retrieving product',
       success: false,
-      error
+      error,
     })
   }
 }
@@ -100,7 +112,7 @@ const updateProduct = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'An error occurred while updating product',
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error,
     })
   }
 }
@@ -113,24 +125,22 @@ const deleteProductbyID = async (req: Request, res: Response) => {
       res.status(200).json({
         message: 'Product deleted successfully',
         success: true,
-        data: result,
+        data: {},
       })
     }
   } catch (error) {
     res.status(500).json({
       message: 'An error occurred while deleting product',
       success: false,
-      error: error instanceof Error? error.message : 'Unknown error',
+      error: error,
     })
   }
 }
-
 
 export const productController = {
   createNewProducts,
   GetallProducts,
   getProductByID,
   updateProduct,
-  deleteProductbyID
-
+  deleteProductbyID,
 }

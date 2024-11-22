@@ -1,7 +1,8 @@
+import { productInterface } from '../products/product.interface'
 
-export interface OrderRequest {
-  email: string 
+export interface OrderRequest extends productInterface {
+  email: string
   productId: string | null
-  quantity: number  
+  quantity: number
   totalPrice: number
 }

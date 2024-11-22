@@ -18,8 +18,8 @@ const createOrdersfromDB = (payload) => __awaiter(void 0, void 0, void 0, functi
     const result = yield order_model_1.default.create(payload);
     return result;
 });
-const getOrdersByCustomerfromDB = (customerId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.default.find({ customerId });
+const getAllOrdersfromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield order_model_1.default.find();
     return result;
 });
 const CalculateOrderRevenuefromDB = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -39,6 +39,6 @@ const CalculateOrderRevenuefromDB = () => __awaiter(void 0, void 0, void 0, func
 });
 exports.OrderService = {
     createOrdersfromDB,
-    getOrdersByCustomerfromDB,
-    CalculateOrderRevenuefromDB
+    getAllOrdersfromDB,
+    CalculateOrderRevenuefromDB,
 };
