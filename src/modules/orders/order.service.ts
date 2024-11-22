@@ -1,9 +1,7 @@
 import { OrderRequest } from './order.interface'
 import Orders from './order.model'
 
-const createOrdersfromDB = async (
-  payload: OrderRequest
-): Promise<OrderRequest> => {
+const createOrdersfromDB = async (payload: OrderRequest) => {
   const result = await Orders.create(payload)
   return result
 }

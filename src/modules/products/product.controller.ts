@@ -64,7 +64,7 @@ const GetallProducts = async (req: Request, res: Response) => {
     }
   } catch (error) {
     // Handle unexpected errors
-    res.status(500).json({
+    res.json({
       message: 'An error occurred while retrieving products',
       success: false,
       error: error,
@@ -85,7 +85,7 @@ const getProductByID = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
-    res.status(500).json({
+    res.json({
       message: 'An error occurred while retrieving product',
       success: false,
       error,
@@ -109,7 +109,7 @@ const updateProduct = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
-    res.status(500).json({
+    res.json({
       message: 'An error occurred while updating product',
       success: false,
       error: error,
@@ -129,7 +129,7 @@ const deleteProductbyID = async (req: Request, res: Response) => {
       })
     }
   } catch (error) {
-    res.status(500).json({
+    res.json({
       message: 'An error occurred while deleting product',
       success: false,
       error: error,

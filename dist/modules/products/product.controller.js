@@ -72,7 +72,7 @@ const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (error) {
         // Handle unexpected errors
-        res.status(500).json({
+        res.json({
             message: 'An error occurred while retrieving products',
             success: false,
             error: error,
@@ -91,7 +91,7 @@ const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
     }
     catch (error) {
-        res.status(500).json({
+        res.json({
             message: 'An error occurred while retrieving product',
             success: false,
             error,
@@ -112,7 +112,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
     }
     catch (error) {
-        res.status(500).json({
+        res.json({
             message: 'An error occurred while updating product',
             success: false,
             error: error,
@@ -132,7 +132,7 @@ const deleteProductbyID = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
     }
     catch (error) {
-        res.status(500).json({
+        res.json({
             message: 'An error occurred while deleting product',
             success: false,
             error: error,
