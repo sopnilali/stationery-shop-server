@@ -6,7 +6,7 @@ import express, {
 } from 'express'
 import productRouter from './modules/products/product.router'
 import orderRouter from './modules/orders/order.router'
-import userRouter from './modules/user/user.router'
+import userRouter from './modules/users/user.router'
 
 const app = express()
 
