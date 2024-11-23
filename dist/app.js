@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const product_router_1 = __importDefault(require("./modules/products/product.router"));
 const order_router_1 = __importDefault(require("./modules/orders/order.router"));
+const user_router_1 = __importDefault(require("./modules/user/user.router"));
 const app = (0, express_1.default)();
 // middleware
 app.use(express_1.default.json());
 // routes
 app.use('/api/', product_router_1.default);
 app.use('/api/', order_router_1.default);
+app.use('/api/', user_router_1.default);
 // home routes
 app.get('/', (req, res) => {
     res.send({

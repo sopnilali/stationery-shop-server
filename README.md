@@ -64,6 +64,11 @@ src/
 <li>Get All Orders</li>
 <li>Calculate Total Prices each product by the quantity ordered. I am use MongoDB aggregation pipeline </li>
 
+# Features of Users
+<li>Create Users (ex: name, email, address, phone, role (default role --> user))</li>
+<li>Get All Users</li>
+<li>Update User route access only admin user. If user role to admin, then show error "Admin role cannot be updated". Because, user can not be access update User Route </li>
+
 
 # Error Handling
 <li>I am implement error handling for invalid input, missing data, invalid email and insufficient stock.</li>
@@ -103,11 +108,10 @@ src/
 {
     "status": false,
     "message": "Could not found /api/mylove",
-    "stack": "Error: Could not found /api/mylove\n  at   C:\\new ts assignmet\\stationery-shop-server\\dist\\app.js:24:19\n ...."
+    "stack": "Error: Could not found /api/mylove\n    at C:\\new ts assignmet\\stationery-shop-server\\src\\app.ts:30:17\n
 }
 </pre>
 
-[ GitHub Repository Link: https://github.com/sopnilali/stationery-shop-server]
 
 
 

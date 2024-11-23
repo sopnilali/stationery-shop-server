@@ -5,10 +5,7 @@ import Products from '../products/product.model'
 import Orders from './order.model'
 import { OrderService } from './order.service'
 
-const createOrders = async (
-  req: Request,
-  res: Response
-): Promise<any | null> => {
+const createOrders = async (req: Request, res: Response): Promise<any> => {
   try {
     const order = req.body
     const { email, product, quantity, totalPrice } = order

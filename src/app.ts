@@ -6,6 +6,7 @@ import express, {
 } from 'express'
 import productRouter from './modules/products/product.router'
 import orderRouter from './modules/orders/order.router'
+import userRouter from './modules/user/user.router'
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 // routes
 app.use('/api/', productRouter)
 app.use('/api/', orderRouter)
+app.use('/api/', userRouter)
 
 // home routes
 app.get('/', (req: Request, res: Response) => {
