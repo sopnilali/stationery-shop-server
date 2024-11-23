@@ -1,7 +1,7 @@
 # tour-and-travel-server
 
 <h2>Stationary Shop API</h2>
-<p>I am Develop an Express application with TypeScript, integrating MongoDB with Mongoose to manage a Stationery Shop. </p>
+<p>Assalamu Alaikum! My Name is Md Abdul Adud. Project Name: Stationery Shop. I am Develop an Express application with TypeScript, integrating MongoDB with Mongoose to manage a Stationery Shop.</p>
 
 # Folder Structure
 <p>I organized the project by creating this folder structure. The folders here are product, order and user. All of them are crated in different files, so that they can be controlled and handled very easily.</p>
@@ -53,17 +53,16 @@ src/
     totalPrice: { type: Number, required: true},
 </pre>
 
-
 # Features of Products
 <li>Create Products</li>
 <li>Get All Products by Search Terms (ex: name, category, brand)</li>
-<li>Update Products</li>
-<li>Delete Products</li>
+<li>Update Products. To update products, you need to update the product using productid.</li>
+<li>Delete Products. To delete products, you need to delete the product using productid.</li>
 
 # Features of Orders
-<li>Create Orders</li>
+<li>Create Orders from customer</li>
 <li>Get All Orders</li>
-<li>Calculate Total Prices each product by the quantity ordered</li>
+<li>Calculate Total Prices each product by the quantity ordered. I am use MongoDB aggregation pipeline </li>
 
 
 # Error Handling
