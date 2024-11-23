@@ -15,12 +15,12 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
 
     if (!productdetails) {
       return res.status(404).json({
-        message: 'Product not found',
+        message: 'Product or Order not found',
         status: false,
       })
     }
-
-    if (productdetails.quantity < quantity) { // if productdetails.quantity is less than quantity then show this error message
+    if (productdetails.quantity < quantity) {
+      // if productdetails.quantity is less than quantity then show this error message
       return res.status(400).json({
         message: 'Insufficient stock for the requested quantity',
         status: false,
@@ -29,7 +29,8 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
 
     // Update inventory
     productdetails.quantity -= quantity
-    if (productdetails.quantity === 0) { // if product quantity is zero then product inStock to false
+    if (productdetails.quantity === 0) {
+      // if product quantity is zero then product inStock to false
       productdetails.inStock = false
     }
     await productdetails.save() // update inventory
@@ -43,7 +44,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
     })
 
     // Ensure type compatibility here
-    const savedOrder = await OrderService.createOrdersfromDB(orderdetails) 
+    const savedOrder = await OrderService.createOrdersfromDB(orderdetails)
 
     res.status(201).json({
       message: 'Order created successfully',
@@ -69,7 +70,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
   }
 }
 
-const CalculateOrders = async (req: Request, res: Response): Promise<void> => {
+const CalculateOrders = async (req: Request, res: Response): Promise<any> => {
   try {
     const result = await OrderService.CalculateOrderRevenuefromDB()
     res.status(200).json({
@@ -90,24 +91,33 @@ const CalculateOrders = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-const getAllOrders = async (req: Request, res: Response): Promise<void> => {
+const getAllOrders = async (req: Request, res: Response): Promise<any> => {
   try {
     const orders = await OrderService.getAllOrdersfromDB()
-    res.status(200).json({
-      message: 'Orders retrieved successfully',
-      status: true,
-      data: orders.map(order => {
-        return {
-          _id: order._id,
-          email: order.email,
-          product: order.product,
-          quantity: order.quantity,
-          totalPrice: order.totalPrice,
-          createdAt: order.createdAt,
-          updatedAt: order.updatedAt,
-        }
-      }),
-    })
+
+    if (!orders || orders.length === 0) {
+      res.status(404).json({
+        message: 'Order Not Found ',
+        status: false,
+        data: [],
+      })
+    } else {
+      res.status(200).json({
+        message: 'Orders retrieved successfully',
+        status: true,
+        data: orders.map((order) => {
+          return {
+            _id: order._id,
+            email: order.email,
+            product: order.product,
+            quantity: order.quantity,
+            totalPrice: order.totalPrice,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt,
+          }
+        }),
+      })
+    }
   } catch (er) {
     const stackerror = new Error()
     res.json({

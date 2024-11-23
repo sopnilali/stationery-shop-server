@@ -25,11 +25,12 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const productdetails = yield product_model_1.default.findById(product); // fetch product details
         if (!productdetails) {
             return res.status(404).json({
-                message: 'Product not found',
+                message: 'Product or Order not found',
                 status: false,
             });
         }
-        if (productdetails.quantity < quantity) { // if productdetails.quantity is less than quantity then show this error message
+        if (productdetails.quantity < quantity) {
+            // if productdetails.quantity is less than quantity then show this error message
             return res.status(400).json({
                 message: 'Insufficient stock for the requested quantity',
                 status: false,
@@ -37,7 +38,8 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Update inventory
         productdetails.quantity -= quantity;
-        if (productdetails.quantity === 0) { // if product quantity is zero then product inStock to false
+        if (productdetails.quantity === 0) {
+            // if product quantity is zero then product inStock to false
             productdetails.inStock = false;
         }
         yield productdetails.save(); // update inventory
@@ -98,21 +100,30 @@ const CalculateOrders = (req, res) => __awaiter(void 0, void 0, void 0, function
 const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield order_service_1.OrderService.getAllOrdersfromDB();
-        res.status(200).json({
-            message: 'Orders retrieved successfully',
-            status: true,
-            data: orders.map(order => {
-                return {
-                    _id: order._id,
-                    email: order.email,
-                    product: order.product,
-                    quantity: order.quantity,
-                    totalPrice: order.totalPrice,
-                    createdAt: order.createdAt,
-                    updatedAt: order.updatedAt,
-                };
-            }),
-        });
+        if (!orders || orders.length === 0) {
+            res.status(404).json({
+                message: 'Order Not Found ',
+                status: false,
+                data: [],
+            });
+        }
+        else {
+            res.status(200).json({
+                message: 'Orders retrieved successfully',
+                status: true,
+                data: orders.map((order) => {
+                    return {
+                        _id: order._id,
+                        email: order.email,
+                        product: order.product,
+                        quantity: order.quantity,
+                        totalPrice: order.totalPrice,
+                        createdAt: order.createdAt,
+                        updatedAt: order.updatedAt,
+                    };
+                }),
+            });
+        }
     }
     catch (er) {
         const stackerror = new Error();

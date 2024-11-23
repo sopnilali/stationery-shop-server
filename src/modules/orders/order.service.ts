@@ -17,10 +17,11 @@ const CalculateOrderRevenuefromDB = async () => {
     {
       $group: {
         _id: null,
-        totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered 
+        totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered
       },
     },
-  ]).project({ // only show the calculate total revenue 
+  ]).project({
+    // only show the calculate total revenue
     _id: 0,
     totalRevenue: 1,
   })

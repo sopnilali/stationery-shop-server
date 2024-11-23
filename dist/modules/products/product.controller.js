@@ -61,7 +61,7 @@ const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.json({
                 message: 'Products retrieved Successfully ',
                 status: true,
-                data: products.map(product => {
+                data: products.map((product) => {
                     return {
                         _id: product._id,
                         name: product.name,

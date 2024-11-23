@@ -38,7 +38,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(201).json({
       status: true,
       message: 'Users retrieved successfully',
-      data: users.map(user =>{
+      data: users.map((user) => {
         return {
           _id: user._id,
           name: user.name,

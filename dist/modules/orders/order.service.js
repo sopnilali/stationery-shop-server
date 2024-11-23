@@ -28,10 +28,11 @@ const CalculateOrderRevenuefromDB = () => __awaiter(void 0, void 0, void 0, func
         {
             $group: {
                 _id: null,
-                totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered 
+                totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered
             },
         },
     ]).project({
+        // only show the calculate total revenue
         _id: 0,
         totalRevenue: 1,
     });

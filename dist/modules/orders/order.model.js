@@ -9,7 +9,6 @@ const orderSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: [true, 'Email is required'], // required email field
-        unique: true,
         validate: {
             validator: (value) => validator_1.default.isEmail(value),
             message: '{VALUE} is not a valid email type',

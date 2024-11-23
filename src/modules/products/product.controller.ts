@@ -54,7 +54,7 @@ const GetallProducts = async (req: Request, res: Response) => {
       res.json({
         message: 'Products retrieved Successfully ',
         status: true,
-        data: products.map(product =>{
+        data: products.map((product) => {
           return {
             _id: product._id,
             name: product.name,
