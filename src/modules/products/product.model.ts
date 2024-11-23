@@ -28,8 +28,6 @@ const ProductSchema = new Schema(
       min: [0, 'Quantity must be a positive number'],
     },
     inStock: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date },
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
 )

@@ -1,5 +1,6 @@
 {
-  "name": "tour-and-travel-server",
+  
+  "name": "stationary-shop-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

@@ -35,7 +35,7 @@ const CreateUsers = async (req: Request, res: Response) => {
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userServices.getAllUsersFromDB()
-    res.status(200).json({
+    res.status(201).json({
       status: true,
       message: 'Users retrieved successfully',
       data: users,

@@ -1,9 +1,18 @@
-# tour-and-travel-server
-
+# 🎉 Welcome to Assignment 2 !!
 <h2>Stationary Shop API</h2>
 <p>Assalamu Alaikum! My Name is Md Abdul Adud. Project Name: Stationery Shop. I am Develop an Express application with TypeScript, integrating MongoDB with Mongoose to manage a Stationery Shop.</p>
 
-# Folder Structure
+<h2>Project Name: Stationery Shop</h2>
+
+ <strong>Live: URL</strong> : https://stationery-shop-server.vercel.app/
+
+<h2> Technology Used ⚙️</h2>
+<li>Node.js</li>
+<li>Express.js</li>
+<li>Mongoose</li>
+<li>TypeScript</li>
+
+# Folder Structure 📂
 <p>I organized the project by creating this folder structure. The folders here are product, order and user. All of them are crated in different files, so that they can be controlled and handled very easily.</p>
 
 <pre>
@@ -31,7 +40,7 @@ src/
 ├── server.ts
 </pre>
 
-# Stationary Shop Product Model
+# Stationary Shop Product Model 🚟
 <pre>
     name: { type: String, required: true },
     brand: { type: String, required: true },
@@ -43,8 +52,8 @@ src/
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date },
 </pre>
-
-# Order Model
+ 
+# Order Model 🚟
 <p> I created the order model with validation.</p>
 <pre>
     email: { type: String, required: true},
@@ -53,24 +62,23 @@ src/
     totalPrice: { type: Number, required: true},
 </pre>
 
-# Features of Products
+# Features of Products ⚡
 <li>Create Products</li>
 <li>Get All Products by Search Terms (ex: name, category, brand)</li>
 <li>Update Products. To update products, you need to update the product using productid.</li>
 <li>Delete Products. To delete products, you need to delete the product using productid.</li>
 
-# Features of Orders
+# Features of Orders 🕎
 <li>Create Orders from customer</li>
 <li>Get All Orders</li>
 <li>Calculate Total Prices each product by the quantity ordered. I am use MongoDB aggregation pipeline </li>
 
-# Features of Users
+# Features of Users 👥
 <li>Create Users (ex: name, email, address, phone, role (default role --> user))</li>
 <li>Get All Users</li>
 <li>Update User route access only admin user. If user role to admin, then show error "Admin role cannot be updated". Because, user can not be access update User Route </li>
 
-
-# Error Handling
+# Error Handling ⚠️
 <li>I am implement error handling for invalid input, missing data, invalid email and insufficient stock.</li>
 <pre>
      "errors": {
@@ -111,6 +119,8 @@ src/
     "stack": "Error: Could not found /api/mylove\n    at C:\\new ts assignmet\\stationery-shop-server\\src\\app.ts:30:17\n
 }
 </pre>
+
+# Thanks you Sir/Mam 💕
 
 
 

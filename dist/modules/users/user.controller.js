@@ -44,7 +44,7 @@ const CreateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_service_1.userServices.getAllUsersFromDB();
-        res.status(200).json({
+        res.status(201).json({
             status: true,
             message: 'Users retrieved successfully',
             data: users,
