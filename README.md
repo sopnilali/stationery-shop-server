@@ -1,4 +1,4 @@
-# 🎉 Welcome to Assignment 2 !!
+# 🎉 Welcome to My Stationary Shop !!
 <h2>Stationary Shop API</h2>
 <p>Assalamu Alaikum! My Name is Md Abdul Adud. Project Name: Stationery Shop. I am Develop an Express application with TypeScript, integrating MongoDB with Mongoose to manage a Stationery Shop.</p>
 
