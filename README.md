@@ -4,7 +4,11 @@
 
 <h2>Project Name: Stationery Shop</h2>
 
+<strong>GitHub Repository Link</strong> : https://github.com/sopnilali/stationery-shop-server
+
  <strong>Live: URL</strong> : https://stationery-shop-server.vercel.app/
+
+ <strong>Video Explanation</strong>: https://drive.google.com/drive/folders/1NlBp1vyAn3s_AScffO4PoeVLMBMfJgNs?usp=sharing
 
 <h2> Technology Used ⚙️</h2>
 <li>Node.js</li>
