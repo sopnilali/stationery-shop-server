@@ -3,8 +3,8 @@ import { OrderController } from './order.controller'
 
 const orderRouter = express.Router()
 
-orderRouter.post('/orders', OrderController.createOrders)
-orderRouter.get('/orders', OrderController.getAllOrders)
-orderRouter.get('/orders/revenue', OrderController.CalculateOrders)
+orderRouter.post('/orders', OrderController.createOrders) // create a new order
+orderRouter.get('/orders', OrderController.getAllOrders) // get all the orders
+orderRouter.get('/orders/revenue', OrderController.CalculateOrders) // calculate the total amount of revenue
 
 export default orderRouter

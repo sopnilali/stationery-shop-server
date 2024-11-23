@@ -8,7 +8,7 @@ const validator_1 = __importDefault(require("validator"));
 const orderSchema = new mongoose_1.Schema({
     email: {
         type: String,
-        required: [true, 'Email is required'],
+        required: [true, 'Email is required'], // required email field
         unique: true,
         validate: {
             validator: (value) => validator_1.default.isEmail(value),
@@ -32,10 +32,12 @@ const orderSchema = new mongoose_1.Schema({
     },
     totalPrice: {
         type: Number,
-        min: [0, 'TotalPrice must be a positive number'],
+        min: [0, 'TotalPrice must be a positive number'], // Ensure totalPrice is non-negative
         required: true,
     },
 }, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
+// versionKey: false // You should be aware of the outcome after set to false
+// Automatically adds `createdAt` and `updatedAt`
 );
 const Orders = (0, mongoose_1.model)('orders', orderSchema);
 exports.default = Orders;

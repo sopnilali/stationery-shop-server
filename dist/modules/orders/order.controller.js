@@ -22,14 +22,14 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const order = req.body;
         const { email, product, quantity, totalPrice } = order;
         // Fetch product details
-        const productdetails = yield product_model_1.default.findById(product);
+        const productdetails = yield product_model_1.default.findById(product); // fetch product details
         if (!productdetails) {
             return res.status(404).json({
                 message: 'Product not found',
                 status: false,
             });
         }
-        if (productdetails.quantity < quantity) {
+        if (productdetails.quantity < quantity) { // if productdetails.quantity is less than quantity then show this error message
             return res.status(400).json({
                 message: 'Insufficient stock for the requested quantity',
                 status: false,
@@ -37,10 +37,10 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         // Update inventory
         productdetails.quantity -= quantity;
-        if (productdetails.quantity === 0) {
+        if (productdetails.quantity === 0) { // if product quantity is zero then product inStock to false
             productdetails.inStock = false;
         }
-        yield productdetails.save();
+        yield productdetails.save(); // update inventory
         // Create the order
         const orderdetails = new order_model_1.default({
             email,

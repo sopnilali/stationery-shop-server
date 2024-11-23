@@ -2,12 +2,12 @@ import { OrderRequest } from './order.interface'
 import Orders from './order.model'
 
 const createOrdersfromDB = async (payload: OrderRequest) => {
-  const result = await Orders.create(payload)
+  const result = await Orders.create(payload) // create a new order from database
   return result
 }
 
 const getAllOrdersfromDB = async () => {
-  const result = await Orders.find()
+  const result = await Orders.find() // find all orders from the database
   return result
 }
 
@@ -17,10 +17,10 @@ const CalculateOrderRevenuefromDB = async () => {
     {
       $group: {
         _id: null,
-        totalRevenue: { $sum: '$totalPrice' },
+        totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered 
       },
     },
-  ]).project({
+  ]).project({ // only show the calculate total revenue 
     _id: 0,
     totalRevenue: 1,
   })

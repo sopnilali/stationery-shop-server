@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const order_model_1 = __importDefault(require("./order.model"));
 const createOrdersfromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.default.create(payload);
+    const result = yield order_model_1.default.create(payload); // create a new order from database
     return result;
 });
 const getAllOrdersfromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield order_model_1.default.find();
+    const result = yield order_model_1.default.find(); // find all orders from the database
     return result;
 });
 const CalculateOrderRevenuefromDB = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,7 +28,7 @@ const CalculateOrderRevenuefromDB = () => __awaiter(void 0, void 0, void 0, func
         {
             $group: {
                 _id: null,
-                totalRevenue: { $sum: '$totalPrice' },
+                totalRevenue: { $sum: '$totalPrice' }, // total price to the product ordered 
             },
         },
     ]).project({

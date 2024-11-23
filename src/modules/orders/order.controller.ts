@@ -11,7 +11,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
     const { email, product, quantity, totalPrice } = order
 
     // Fetch product details
-    const productdetails = await Products.findById(product)
+    const productdetails = await Products.findById(product) // fetch product details
 
     if (!productdetails) {
       return res.status(404).json({
@@ -20,7 +20,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
       })
     }
 
-    if (productdetails.quantity < quantity) {
+    if (productdetails.quantity < quantity) { // if productdetails.quantity is less than quantity then show this error message
       return res.status(400).json({
         message: 'Insufficient stock for the requested quantity',
         status: false,
@@ -29,10 +29,10 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
 
     // Update inventory
     productdetails.quantity -= quantity
-    if (productdetails.quantity === 0) {
+    if (productdetails.quantity === 0) { // if product quantity is zero then product inStock to false
       productdetails.inStock = false
     }
-    await productdetails.save()
+    await productdetails.save() // update inventory
 
     // Create the order
     const orderdetails = new Orders({
@@ -43,7 +43,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
     })
 
     // Ensure type compatibility here
-    const savedOrder = await OrderService.createOrdersfromDB(orderdetails)
+    const savedOrder = await OrderService.createOrdersfromDB(orderdetails) 
 
     res.status(201).json({
       message: 'Order created successfully',

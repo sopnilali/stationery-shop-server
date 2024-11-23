@@ -1,16 +1,16 @@
 import { model, Schema } from 'mongoose'
-import validator from 'validator'
+import validator, { version } from 'validator'
 import { OrderRequest } from './order.interface'
 
 const orderSchema = new Schema(
   {
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, 'Email is required'], // required email field
       unique: true,
       validate: {
-        validator: (value: string) => validator.isEmail(value),
-        message: '{VALUE} is not a valid email type',
+        validator: (value: string) => validator.isEmail(value), 
+        message: '{VALUE} is not a valid email type', 
       },
     },
     product: {
@@ -30,11 +30,14 @@ const orderSchema = new Schema(
     },
     totalPrice: {
       type: Number,
-      min: [0, 'TotalPrice must be a positive number'],
+      min: [0, 'TotalPrice must be a positive number'], // Ensure totalPrice is non-negative
       required: true,
     },
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
+  // versionKey: false // You should be aware of the outcome after set to false
+
+   // Automatically adds `createdAt` and `updatedAt`
 )
 
 const Orders = model<OrderRequest>('orders', orderSchema)
