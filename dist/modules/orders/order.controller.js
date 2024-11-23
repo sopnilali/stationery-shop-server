@@ -20,9 +20,9 @@ const order_service_1 = require("./order.service");
 const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = req.body;
-        const { email, productId, quantity, totalPrice } = order;
+        const { email, product, quantity, totalPrice } = order;
         // Fetch product details
-        const productdetails = yield product_model_1.default.findById(productId);
+        const productdetails = yield product_model_1.default.findById(product);
         if (!productdetails) {
             return res.status(404).json({
                 message: 'Product not found',
@@ -44,7 +44,7 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Create the order
         const orderdetails = new order_model_1.default({
             email,
-            productId,
+            product,
             quantity,
             totalPrice,
         });
@@ -56,7 +56,7 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             data: {
                 _id: savedOrder._id,
                 email: savedOrder.email,
-                productId: savedOrder.productId,
+                product: savedOrder.product,
                 quantity: savedOrder.quantity,
                 totalPrice: savedOrder.totalPrice,
                 createdAt: savedOrder.createdAt,
@@ -65,11 +65,12 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        console.error('Order creation error:', error);
+        const stackerror = new Error();
         res.status(500).json({
             message: 'An error occurred while creating the order',
             status: false,
             error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -85,10 +86,12 @@ const CalculateOrders = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     catch (error) {
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while calculating the revenue',
             status: false,
-            error,
+            error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -101,11 +104,13 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             data: orders,
         });
     }
-    catch (error) {
+    catch (er) {
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while retrieving the orders',
             status: false,
-            error,
+            error: er,
+            stack: stackerror.stack,
         });
     }
 });

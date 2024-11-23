@@ -26,6 +26,7 @@ app.all('*', (req, res, next) => {
     res.json({
         status: false,
         message: error.message,
+        stack: error.stack,
     });
     next(error);
 });

@@ -1,7 +1,6 @@
 //req and response from hit use
 import { Request, Response } from 'express'
 import { ProductService } from './product.service'
-import { Error } from 'mongoose'
 
 const createNewProducts = async (req: Request, res: Response) => {
   try {
@@ -11,33 +10,28 @@ const createNewProducts = async (req: Request, res: Response) => {
     if (result) {
       res.status(201).json({
         message: 'Product created successfully',
-        success: true,
+        status: true,
         data: {
           _id: result._id,
           name: result.name,
           brand: result.brand,
           price: result.price,
+          category: result.category,
           description: result.description,
           quantity: result.quantity,
-          category: result.category,
           inStock: result.inStock,
           createdAt: result.createdAt,
           updatedAt: result.updatedAt,
         },
       })
     }
-
-    // In case the service does not return a result
-    res.status(500).json({
-      message: 'Failed to create product',
-      success: false,
-    })
   } catch (error) {
-    res.status(500).json({
+    const stackerror = new Error()
+    res.json({
       message: 'An error occurred while adding the product',
-      success: false,
-      error,
-      stack: new Error('Something went wrong'),
+      status: false,
+      error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -48,26 +42,29 @@ const GetallProducts = async (req: Request, res: Response) => {
 
     // Retrieve products based on query parameters
     const products = await ProductService.getAllProductsfromDB(productData)
+
     // Success response
     if (!products || products.length === 0) {
       res.status(404).json({
         message: 'Products Not Found ',
-        success: false,
+        status: false,
         data: [],
       })
     } else {
       res.json({
         message: 'Products retrieved Successfully ',
-        success: true,
+        status: true,
         data: products,
       })
     }
-  } catch (error) {
+  } catch (error: any) {
     // Handle unexpected errors
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while retrieving products',
-      success: false,
+      status: false,
       error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -80,15 +77,17 @@ const getProductByID = async (req: Request, res: Response) => {
     if (product) {
       res.status(200).json({
         message: 'Product retrieved successfully',
-        success: true,
+        status: true,
         data: product,
       })
     }
-  } catch (error) {
+  } catch (error: any) {
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while retrieving product',
-      success: false,
-      error,
+      status: false,
+      error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -104,15 +103,17 @@ const updateProduct = async (req: Request, res: Response) => {
     if (result) {
       res.status(200).json({
         message: 'Product updated successfully',
-        success: true,
+        status: true,
         data: result,
       })
     }
   } catch (error) {
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while updating product',
-      success: false,
+      status: false,
       error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -124,15 +125,17 @@ const deleteProductbyID = async (req: Request, res: Response) => {
     if (result) {
       res.status(200).json({
         message: 'Product deleted successfully',
-        success: true,
+        status: true,
         data: {},
       })
     }
   } catch (error) {
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while deleting product',
-      success: false,
+      status: false,
       error: error,
+      stack: stackerror.stack,
     })
   }
 }

@@ -11,10 +11,10 @@ const createOrders = async (
 ): Promise<any | null> => {
   try {
     const order = req.body
-    const { email, productId, quantity, totalPrice } = order
+    const { email, product, quantity, totalPrice } = order
 
     // Fetch product details
-    const productdetails = await Products.findById(productId)
+    const productdetails = await Products.findById(product)
 
     if (!productdetails) {
       return res.status(404).json({
@@ -40,7 +40,7 @@ const createOrders = async (
     // Create the order
     const orderdetails = new Orders({
       email,
-      productId,
+      product,
       quantity,
       totalPrice,
     })
@@ -54,7 +54,7 @@ const createOrders = async (
       data: {
         _id: savedOrder._id,
         email: savedOrder.email,
-        productId: savedOrder.productId,
+        product: savedOrder.product,
         quantity: savedOrder.quantity,
         totalPrice: savedOrder.totalPrice,
         createdAt: savedOrder.createdAt,
@@ -62,11 +62,12 @@ const createOrders = async (
       },
     })
   } catch (error) {
-    console.error('Order creation error:', error)
+    const stackerror = new Error()
     res.status(500).json({
       message: 'An error occurred while creating the order',
       status: false,
       error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -81,11 +82,13 @@ const CalculateOrders = async (req: Request, res: Response): Promise<void> => {
         totalRevenue: result[0].totalRevenue, // Total revenue calculated from all orders
       },
     })
-  } catch (error) {
+  } catch (error: any) {
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while calculating the revenue',
       status: false,
-      error,
+      error: error,
+      stack: stackerror.stack,
     })
   }
 }
@@ -98,11 +101,13 @@ const getAllOrders = async (req: Request, res: Response): Promise<void> => {
       status: true,
       data: orders,
     })
-  } catch (error) {
+  } catch (er) {
+    const stackerror = new Error()
     res.json({
       message: 'An error occurred while retrieving the orders',
       status: false,
-      error,
+      error: er,
+      stack: stackerror.stack,
     })
   }
 }

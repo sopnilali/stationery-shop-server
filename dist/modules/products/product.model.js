@@ -7,19 +7,29 @@ const ProductSchema = new mongoose_1.Schema({
     price: {
         type: Number,
         required: true,
-        validate: {
-            validator: function (value) {
-                return value >= 0; // Ensure price is non-negative
-            },
-            message: 'Price must be a positive number', // Custom error message
-        },
+        min: [0, 'Price must be a positive number'],
     },
-    category: { type: String, required: true },
+    category: {
+        type: String,
+        enum: [
+            'Writing',
+            'Office Supplies',
+            'Art Supplies',
+            'Educational',
+            'Technology',
+        ],
+        required: true,
+    },
     description: { type: String, required: true },
-    quantity: { type: Number, required: true },
+    quantity: {
+        type: Number,
+        required: true,
+        min: [0, 'Quantity must be a positive number'],
+    },
     inStock: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-});
+    updatedAt: { type: Date },
+}, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
+);
 const Products = (0, mongoose_1.model)('products', ProductSchema);
 exports.default = Products;

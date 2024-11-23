@@ -1,36 +1,41 @@
 import { model, Schema } from 'mongoose'
+import validator from 'validator'
 import { OrderRequest } from './order.interface'
 
-const orderSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  productId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: [true, 'Quantity is required'],
-    validate: {
-      validator: function (value: number): boolean {
-        return value >= 0 // Ensure quantity is non-negative
+const orderSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      validate: {
+        validator: (value: string) => validator.isEmail(value),
+        message: '{VALUE} is not a valid email type',
       },
-      message: 'Quantity must be a positive number', // Custom error message
+    },
+    product: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'product is required'],
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [0, 'Quantity must be a positive number'],
+      validate: {
+        validator: function (value: number): boolean {
+          return value >= 0 // Ensure quantity is non-negative
+        },
+        message: 'Quantity must be a positive number',
+      },
+    },
+    totalPrice: {
+      type: Number,
+      min: [0, 'TotalPrice must be a positive number'],
+      required: true,
     },
   },
-  totalPrice: {
-    type: Number,
-    validate: {
-      validator: (value: number): boolean => value > 0,
-      message: `Quantity must be a positive number`,
-    },
-    required: true,
-  },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-})
+  { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
+)
 
 const Orders = model<OrderRequest>('orders', orderSchema)
 

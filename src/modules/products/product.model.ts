@@ -1,26 +1,38 @@
 import { model, Schema } from 'mongoose'
 import { productInterface } from './product.interface'
 
-const ProductSchema = new Schema({
-  name: { type: String, required: true },
-  brand: { type: String, required: true },
-  price: {
-    type: Number,
-    required: true,
-    validate: {
-      validator: function (value: number): boolean {
-        return value >= 0 // Ensure price is non-negative
-      },
-      message: 'Price must be a positive number', // Custom error message
+const ProductSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    brand: { type: String, required: true },
+    price: {
+      type: Number,
+      required: true,
+      min: [0, 'Price must be a positive number'],
     },
+    category: {
+      type: String,
+      enum: [
+        'Writing',
+        'Office Supplies',
+        'Art Supplies',
+        'Educational',
+        'Technology',
+      ],
+      required: true,
+    },
+    description: { type: String, required: true },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [0, 'Quantity must be a positive number'],
+    },
+    inStock: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date },
   },
-  category: { type: String, required: true },
-  description: { type: String, required: true },
-  quantity: { type: Number, required: true },
-  inStock: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-})
+  { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
+)
 
 const Products = model<productInterface>('products', ProductSchema)
 

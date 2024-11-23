@@ -4,7 +4,6 @@ import express, {
   Request,
   Response,
 } from 'express'
-import cors from 'cors'
 import productRouter from './modules/products/product.router'
 import orderRouter from './modules/orders/order.router'
 
@@ -33,6 +32,7 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
   res.json({
     status: false,
     message: error.message,
+    stack: error.stack,
   })
   next(error)
 })

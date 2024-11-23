@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productController = void 0;
 const product_service_1 = require("./product.service");
-const mongoose_1 = require("mongoose");
 const createNewProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
@@ -19,33 +18,29 @@ const createNewProducts = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (result) {
             res.status(201).json({
                 message: 'Product created successfully',
-                success: true,
+                status: true,
                 data: {
                     _id: result._id,
                     name: result.name,
                     brand: result.brand,
                     price: result.price,
+                    category: result.category,
                     description: result.description,
                     quantity: result.quantity,
-                    category: result.category,
                     inStock: result.inStock,
                     createdAt: result.createdAt,
                     updatedAt: result.updatedAt,
                 },
             });
         }
-        // In case the service does not return a result
-        res.status(500).json({
-            message: 'Failed to create product',
-            success: false,
-        });
     }
     catch (error) {
-        res.status(500).json({
+        const stackerror = new Error();
+        res.json({
             message: 'An error occurred while adding the product',
-            success: false,
-            error,
-            stack: new mongoose_1.Error('Something went wrong'),
+            status: false,
+            error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -58,24 +53,26 @@ const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!products || products.length === 0) {
             res.status(404).json({
                 message: 'Products Not Found ',
-                success: false,
+                status: false,
                 data: [],
             });
         }
         else {
             res.json({
                 message: 'Products retrieved Successfully ',
-                success: true,
+                status: true,
                 data: products,
             });
         }
     }
     catch (error) {
         // Handle unexpected errors
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while retrieving products',
-            success: false,
+            status: false,
             error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -85,16 +82,18 @@ const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (product) {
             res.status(200).json({
                 message: 'Product retrieved successfully',
-                success: true,
+                status: true,
                 data: product,
             });
         }
     }
     catch (error) {
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while retrieving product',
-            success: false,
-            error,
+            status: false,
+            error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -106,16 +105,18 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (result) {
             res.status(200).json({
                 message: 'Product updated successfully',
-                success: true,
+                status: true,
                 data: result,
             });
         }
     }
     catch (error) {
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while updating product',
-            success: false,
+            status: false,
             error: error,
+            stack: stackerror.stack,
         });
     }
 });
@@ -126,16 +127,18 @@ const deleteProductbyID = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (result) {
             res.status(200).json({
                 message: 'Product deleted successfully',
-                success: true,
+                status: true,
                 data: {},
             });
         }
     }
     catch (error) {
+        const stackerror = new Error();
         res.json({
             message: 'An error occurred while deleting product',
-            success: false,
+            status: false,
             error: error,
+            stack: stackerror.stack,
         });
     }
 });
