@@ -66,6 +66,33 @@ src/
     totalPrice: { type: Number, required: true},
 </pre>
 
+# User Model 👥
+<pre>
+name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: ['admin', 'user'],
+      default: 'user',
+    },
+</pre>
+
 # Features of Products ⚡
 <li>Create Products</li>
 <li>Get All Products by Search Terms (ex: name, category, brand)</li>
