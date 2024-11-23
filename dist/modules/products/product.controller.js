@@ -61,7 +61,20 @@ const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.json({
                 message: 'Products retrieved Successfully ',
                 status: true,
-                data: products,
+                data: products.map(product => {
+                    return {
+                        _id: product._id,
+                        name: product.name,
+                        brand: product.brand,
+                        price: product.price,
+                        category: product.category,
+                        description: product.description,
+                        quantity: product.quantity,
+                        inStock: product.inStock,
+                        createdAt: product.createdAt,
+                        updatedAt: product.updatedAt,
+                    };
+                }),
             });
         }
     }

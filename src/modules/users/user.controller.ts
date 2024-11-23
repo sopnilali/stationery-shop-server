@@ -38,7 +38,18 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(201).json({
       status: true,
       message: 'Users retrieved successfully',
-      data: users,
+      data: users.map(user =>{
+        return {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          address: user.address,
+          phone: user.phone,
+          role: user.role,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        }
+      }),
     })
   } catch (error) {
     const stackError = new Error()

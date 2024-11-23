@@ -101,7 +101,17 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(200).json({
             message: 'Orders retrieved successfully',
             status: true,
-            data: orders,
+            data: orders.map(order => {
+                return {
+                    _id: order._id,
+                    email: order.email,
+                    product: order.product,
+                    quantity: order.quantity,
+                    totalPrice: order.totalPrice,
+                    createdAt: order.createdAt,
+                    updatedAt: order.updatedAt,
+                };
+            }),
         });
     }
     catch (er) {

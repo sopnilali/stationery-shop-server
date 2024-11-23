@@ -96,7 +96,17 @@ const getAllOrders = async (req: Request, res: Response): Promise<void> => {
     res.status(200).json({
       message: 'Orders retrieved successfully',
       status: true,
-      data: orders,
+      data: orders.map(order => {
+        return {
+          _id: order._id,
+          email: order.email,
+          product: order.product,
+          quantity: order.quantity,
+          totalPrice: order.totalPrice,
+          createdAt: order.createdAt,
+          updatedAt: order.updatedAt,
+        }
+      }),
     })
   } catch (er) {
     const stackerror = new Error()
