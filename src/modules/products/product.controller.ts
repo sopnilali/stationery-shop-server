@@ -91,7 +91,18 @@ const getProductByID = async (req: Request, res: Response) => {
       res.status(200).json({
         message: 'Product retrieved successfully',
         status: true,
-        data: product,
+        data: {
+          _id: product._id,
+          name: product.name,
+          brand: product.brand,
+          price: product.price,
+          category: product.category,
+          description: product.description,
+          quantity: product.quantity,
+          inStock: product.inStock,
+          createdAt: product.createdAt,
+          updatedAt: product.updatedAt,
+        },
       })
     }
   } catch (error: any) {
