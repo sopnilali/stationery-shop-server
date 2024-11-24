@@ -8,7 +8,7 @@ const orderSchema = new Schema(
       type: String,
       required: [true, 'Email is required'], // required email field
       validate: {
-        validator: (value: string) => validator.isEmail(value),
+        validator: (value: string) => validator.isEmail(value), // email validation function to validate email
         message: '{VALUE} is not a valid email type',
       },
     },

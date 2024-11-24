@@ -7,7 +7,7 @@ const ProductSchema = new mongoose_1.Schema({
     price: {
         type: Number,
         required: true,
-        min: [0, 'Price must be a positive number'],
+        min: [0, 'Price must be a positive number'], // if price is negative then price must be positive message show.
     },
     category: {
         type: String,
@@ -24,7 +24,7 @@ const ProductSchema = new mongoose_1.Schema({
     quantity: {
         type: Number,
         required: true,
-        min: [0, 'Quantity must be a positive number'],
+        min: [0, 'Quantity must be a positive number'], // if quantity is negative then quantity must be positive message show.
     },
     inStock: { type: Boolean, default: true },
 }, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`

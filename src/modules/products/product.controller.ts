@@ -128,7 +128,18 @@ const updateProduct = async (req: Request, res: Response) => {
       res.status(200).json({
         message: 'Product updated successfully',
         status: true,
-        data: result,
+        data: {
+          _id: result._id,
+          name: result.name,
+          brand: result.brand,
+          price: result.price,
+          category: result.category,
+          description: result.description,
+          quantity: result.quantity,
+          inStock: result.inStock,
+          createdAt: result.createdAt,
+          updatedAt: result.updatedAt,
+        },
       })
     }
   } catch (error) {

@@ -15,7 +15,7 @@ const user_service_1 = require("./user.service");
 const CreateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = req.body;
-        const result = yield user_service_1.userServices.createUserFromDB(userData);
+        const result = yield user_service_1.userServices.createUserFromDB(userData); // create user from database
         res.status(201).json({
             message: 'User created successfully',
             status: true,
@@ -32,7 +32,7 @@ const CreateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
-        const stackError = new Error();
+        const stackError = new Error(); // stack error
         res.status(500).json({
             status: false,
             message: 'An error occurred while creating the user',
@@ -43,7 +43,7 @@ const CreateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield user_service_1.userServices.getAllUsersFromDB();
+        const users = yield user_service_1.userServices.getAllUsersFromDB(); // get all use from database
         res.status(201).json({
             status: true,
             message: 'Users retrieved successfully',
@@ -85,7 +85,7 @@ const updateUserRole = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 stack: stackError.stack,
             });
         }
-        const result = yield user_service_1.userServices.updateUserRoleFromDB(userId, userRole);
+        const result = yield user_service_1.userServices.updateUserRoleFromDB(userId, userRole); // update user to admin from database 
         res.status(200).json({
             status: true,
             message: 'User role updated successfully',

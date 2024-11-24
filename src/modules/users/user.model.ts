@@ -13,8 +13,8 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       validate: {
-        validator: (value: string) => validator.isEmail(value),
-        message: '{VALUE} is not a valid email type',
+        validator: (value: string) => validator.isEmail(value), // email validation
+        message: '{VALUE} is not a valid email type', // email validation message to be displayed
       },
     },
     address: {
@@ -28,8 +28,8 @@ const userSchema = new Schema(
     role: {
       type: String,
       required: true,
-      enum: ['admin', 'user'],
-      default: 'user',
+      enum: ['admin', 'user'], // user role admin or user
+      default: 'user', // default user role
     },
   },
   { timestamps: true }

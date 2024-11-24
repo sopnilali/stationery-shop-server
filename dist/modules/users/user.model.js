@@ -15,8 +15,8 @@ const userSchema = new mongoose_1.Schema({
         required: true,
         unique: true,
         validate: {
-            validator: (value) => validator_1.default.isEmail(value),
-            message: '{VALUE} is not a valid email type',
+            validator: (value) => validator_1.default.isEmail(value), // email validation
+            message: '{VALUE} is not a valid email type', // email validation message to be displayed
         },
     },
     address: {
@@ -30,8 +30,8 @@ const userSchema = new mongoose_1.Schema({
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'user'],
-        default: 'user',
+        enum: ['admin', 'user'], // user role admin or user
+        default: 'user', // default user role
     },
 }, { timestamps: true }); // Automatically adds `createdAt` and `updatedAt`
 const User = (0, mongoose_1.model)('users', userSchema);
