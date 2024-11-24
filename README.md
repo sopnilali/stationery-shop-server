@@ -53,8 +53,6 @@ src/
     description: { type: String, required: true },
     quantity: { type: Number,required: true,},
     inStock: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date },
 </pre>
  
 # Order Model 🚟
