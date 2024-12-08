@@ -7,7 +7,7 @@ const createOrdersfromDB = async (payload: OrderRequest) => {
 }
 
 const getAllOrdersfromDB = async () => {
-  const result = await Orders.find() // find all orders from the database
+  const result = await Orders.find().populate('product') // find all orders from the database
   return result
 }
 
