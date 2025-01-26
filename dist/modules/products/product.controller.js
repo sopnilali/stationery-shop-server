@@ -8,87 +8,126 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productController = void 0;
 const product_service_1 = require("./product.service");
-const createNewProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const productData = req.body;
-        const result = yield product_service_1.ProductService.createProductsfromDB(productData);
-        if (result) {
-            res.status(201).json({
-                message: 'Product created successfully',
-                status: true,
-                data: {
-                    _id: result._id,
-                    name: result.name,
-                    brand: result.brand,
-                    price: result.price,
-                    category: result.category,
-                    description: result.description,
-                    quantity: result.quantity,
-                    inStock: result.inStock,
-                    createdAt: result.createdAt,
-                    updatedAt: result.updatedAt,
-                },
-            });
-        }
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const http_status_1 = __importDefault(require("http-status"));
+const user_model_1 = require("../user/user.model");
+const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, brand, category, description, price, productImg, quantity, stock } = req.body;
+    const userId = yield user_model_1.User.findOne({ email: req.user.userEmail });
+    const productData = {
+        name,
+        brand,
+        category,
+        description,
+        price,
+        productImg,
+        quantity,
+        user: userId === null || userId === void 0 ? void 0 : userId._id,
+        stock,
+    };
+    const result = yield product_service_1.ProductService.createProductsfromDB(productData);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Product is created succesfully',
+        data: {
+            _id: result._id,
+            name: result.name,
+            category: result.category,
+            description: result.description,
+            price: result.price,
+            productImg: result.productImg,
+            quantity: result.quantity,
+            user: result.user,
+            stock: result.stock,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt,
+        },
+    });
+}));
+const getAllProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { search, sortBy = 'createdAt', sortOrder = 'desc', filter } = req.query;
+    // Build query object
+    let query = {};
+    if (search) {
+        query.$or = [
+            { title: { $regex: search, $options: 'i' } },
+            { category: { $regex: search, $options: 'i' } },
+        ];
     }
-    catch (error) {
-        const stackerror = new Error();
-        res.json({
-            message: 'An error occurred while adding the product',
-            status: false,
-            error: error,
-            stack: stackerror.stack,
-        });
+    if (filter) {
+        query.author = filter;
     }
-});
-const GetallProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const productData = req.query;
-        // Retrieve products based on query parameters
-        const products = yield product_service_1.ProductService.getAllProductsfromDB(productData);
-        // Success response
-        if (!products || products.length === 0) {
-            res.status(404).json({
-                message: 'Products Not Found ',
-                status: false,
-                data: [],
-            });
-        }
-        else {
-            res.json({
-                message: 'Products retrieved Successfully ',
-                status: true,
-                data: products.map((product) => {
-                    return {
-                        _id: product._id,
-                        name: product.name,
-                        brand: product.brand,
-                        price: product.price,
-                        category: product.category,
-                        description: product.description,
-                        quantity: product.quantity,
-                        inStock: product.inStock,
-                        createdAt: product.createdAt,
-                        updatedAt: product.updatedAt,
-                    };
-                }),
-            });
-        }
-    }
-    catch (error) {
-        // Handle unexpected errors
-        const stackerror = new Error();
-        res.json({
-            message: 'An error occurred while retrieving products',
-            status: false,
-            error: error,
-            stack: stackerror.stack,
-        });
-    }
-});
+    // Ensure sortBy is a string
+    const validSortBy = typeof sortBy === 'string' ? sortBy : 'createdAt';
+    const result = yield product_service_1.ProductService.getAllProductsfromDB(query, validSortBy, sortOrder);
+    // Response
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: " Product fetched successfully",
+        data: result.map((blog) => ({
+            _id: blog._id,
+            name: blog.name,
+            category: blog.category,
+            description: blog.description,
+            price: blog.price,
+            quantity: blog.quantity,
+            stock: blog.stock,
+            user: blog.user,
+        })),
+    });
+}));
+// const GetallProducts = async (req: Request, res: Response) => {
+//   try {
+//     const productData = req.query
+//     // Retrieve products based on query parameters
+//     const products = await ProductService.getAllProductsfromDB(productData)
+//     // Success response
+//     if (!products || products.length === 0) {
+//       res.status(404).json({
+//         message: 'Products Not Found ',
+//         status: false,
+//         data: [],
+//       })
+//     } else {
+//       res.json({
+//         message: 'Products retrieved Successfully ',
+//         status: true,
+//         data: products.map((product) => {
+//           return {
+//             _id: product._id,
+//             name: product.name,
+//             brand: product.brand,
+//             price: product.price,
+//             category: product.category,
+//             description: product.description,
+//             quantity: product.quantity,
+//             inStock: product.inStock,
+//             createdAt: product.createdAt,
+//             updatedAt: product.updatedAt,
+//           }
+//         }),
+//       })
+//     }
+//   } catch (error: any) {
+//     // Handle unexpected errors
+//     const stackerror = new Error()
+//     res.json({
+//       message: 'An error occurred while retrieving products',
+//       status: false,
+//       error: error,
+//       stack: stackerror.stack,
+//     })
+//   }
+// }
 const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const product = yield product_service_1.ProductService.getProductByIdfromDB(req.params.productId);
@@ -99,14 +138,12 @@ const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 data: {
                     _id: product._id,
                     name: product.name,
-                    brand: product.brand,
-                    price: product.price,
                     category: product.category,
                     description: product.description,
+                    price: product.price,
                     quantity: product.quantity,
-                    inStock: product.inStock,
-                    createdAt: product.createdAt,
-                    updatedAt: product.updatedAt,
+                    stock: product.stock,
+                    user: product.user
                 },
             });
         }
@@ -133,14 +170,12 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: {
                     _id: result._id,
                     name: result.name,
-                    brand: result.brand,
                     price: result.price,
                     category: result.category,
                     description: result.description,
                     quantity: result.quantity,
-                    inStock: result.inStock,
-                    createdAt: result.createdAt,
-                    updatedAt: result.updatedAt,
+                    stock: result.stock,
+                    user: result.user,
                 },
             });
         }
@@ -179,7 +214,7 @@ const deleteProductbyID = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.productController = {
     createNewProducts,
-    GetallProducts,
+    getAllProducts,
     getProductByID,
     updateProduct,
     deleteProductbyID,

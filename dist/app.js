@@ -4,40 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const product_router_1 = __importDefault(require("./modules/products/product.router"));
-const order_router_1 = __importDefault(require("./modules/orders/order.router"));
-const user_router_1 = __importDefault(require("./modules/users/user.router"));
+const routes_1 = __importDefault(require("./routes"));
+const cors_1 = __importDefault(require("cors"));
+const notFound_1 = __importDefault(require("./middlewares/notFound"));
+const globalErrorhandler_1 = __importDefault(require("./middlewares/globalErrorhandler"));
 const app = (0, express_1.default)();
-// middleware
 app.use(express_1.default.json());
-// routes
-app.use('/api/', product_router_1.default);
-app.use('/api/', order_router_1.default);
-app.use('/api/', user_router_1.default);
-// home routes
+// CORS
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:5173', // Allow requests from this specific origi,
+    credentials: true
+}));
+// application routes
+app.use('/api/v2', routes_1.default);
+// api route
 app.get('/', (req, res) => {
-    res.send({
-        status: true,
-        message: 'Welcome to the Stationery Shop API! ⚡',
-    });
-});
-// error handling middleware start
-app.all('*', (req, res, next) => {
-    const error = new Error(`Could not found ${req.url}`);
-    res.status(404);
     res.json({
-        status: false,
-        message: error.message,
-        stack: error.stack,
+        status: true,
+        message: 'Welcome to Blog Project API',
     });
-    next(error);
 });
-app.use((err, req, res, next) => {
-    res.status(500).json({
-        status: false,
-        message: 'Internal Server Error',
-    });
-    next(err);
-});
-// error handling middleware end
+app.use(globalErrorhandler_1.default);
+//Not Found
+app.use(notFound_1.default);
 exports.default = app;

@@ -35,6 +35,11 @@ const orderSchema = new mongoose_1.Schema({
         min: [0, 'TotalPrice must be a positive number'], // Ensure totalPrice is non-negative
         required: true,
     },
+    status: {
+        type: String,
+        enum: ['Pending', 'Shipped', 'Delivered', 'Cancelled'],
+        default: 'Pending',
+    }
 }, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
 // versionKey: false // You should be aware of the outcome after set to false
 // Automatically adds `createdAt` and `updatedAt`

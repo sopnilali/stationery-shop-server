@@ -1,9 +1,12 @@
 //req and response from hit use
 
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import Products from '../products/product.model'
 import Orders from './order.model'
 import { OrderService } from './order.service'
+import { blogServices } from '../blog/blog.service'
+import httpStatus from 'http-status'
+import AppError from '../../errors/AppError'
 
 const createOrders = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -31,7 +34,7 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
     productdetails.quantity -= quantity
     if (productdetails.quantity === 0) {
       // if product quantity is zero then product inStock to false
-      productdetails.inStock = false
+      productdetails.stock = false
     }
     await productdetails.save() // update inventory
 
@@ -63,6 +66,43 @@ const createOrders = async (req: Request, res: Response): Promise<any> => {
     const stackerror = new Error()
     res.status(500).json({
       message: 'An error occurred while creating the order',
+      status: false,
+      error: error,
+      stack: stackerror.stack,
+    })
+  }
+}
+
+const deleteBlogContent: RequestHandler = async (req, res) => {
+  try {
+    const blogid = req.params.id
+    const result = await blogServices.deleteBlogContentByIdfromDB(blogid)
+
+    if (!result?._id) {
+      throw new AppError(httpStatus.NOT_FOUND, " blog not found");
+    }
+
+    const statuscode = 200
+
+    res.status(200).json({
+      success: true,
+      message: 'Blog deleted successfully',
+      statusCode: statuscode,
+    })
+
+
+    if (result) {
+      const statuscode = 200
+      res.status(200).json({
+        success: true,
+        message: 'Blog deleted successfully',
+        statusCode: statuscode,
+      })
+    }
+  } catch (error) {
+    const stackerror = new Error()
+    res.json({
+      message: 'An error occurred while deleting blog',
       status: false,
       error: error,
       stack: stackerror.stack,

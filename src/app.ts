@@ -1,58 +1,40 @@
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from 'express'
-import productRouter from './modules/products/product.router'
-import orderRouter from './modules/orders/order.router'
-import userRouter from './modules/users/user.router'
+import express, { Application, Request, Response } from 'express'
+import router from './routes';
+import cors from 'cors';
+import notFound from './middlewares/notFound';
+import globalErrorHandler from './middlewares/globalErrorhandler';
 
-const app = express()
+const app: Application = express()
 
-// middleware
 app.use(express.json())
+// CORS
 
-// routes
-app.use('/api/', productRouter)
-app.use('/api/', orderRouter)
-app.use('/api/', userRouter)
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow requests from this specific origi,
+    credentials: true 
+},
+));
 
-// home routes
+
+// application routes
+app.use('/api/v2', router);
+
+
+
+
+// api route
 app.get('/', (req: Request, res: Response) => {
-  res.send({
-    status: true,
-    message: 'Welcome to the Stationery Shop API! ⚡',
-  })
-})
-
-// error handling middleware start
-
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
-  const error = new Error(`Could not found ${req.url}`)
-  res.status(404)
-  res.json({
-    status: false,
-    message: error.message,
-    stack: error.stack,
-  })
-  next(error)
-})
-
-app.use(
-  (
-    err: ErrorRequestHandler,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    res.status(500).json({
-      status: false,
-      message: 'Internal Server Error',
+    res.json({
+        status: true,
+        message: 'Welcome to Blog Project API',
     })
-    next(err)
-  }
-)
-// error handling middleware end
+})
+
+
+app.use(globalErrorHandler);
+//Not Found
+app.use(notFound)
+
+
 
 export default app

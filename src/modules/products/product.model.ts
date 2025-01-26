@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { productInterface } from './product.interface'
+import { TProductInterface } from './product.interface'
 
 const ProductSchema = new Schema(
   {
@@ -12,26 +12,24 @@ const ProductSchema = new Schema(
     },
     category: {
       type: String,
-      enum: [
-        'Writing',
-        'Office Supplies',
-        'Art Supplies',
-        'Educational',
-        'Technology',
-      ],
       required: true,
     },
     description: { type: String, required: true },
+    productImg: { type: String, default: 'https://i.ibb.co.com/F40Mt4Y/touchicon-180.png'},
     quantity: {
       type: Number,
       required: true,
       min: [0, 'Quantity must be a positive number'], // if quantity is negative then quantity must be positive message show.
     },
-    inStock: { type: Boolean, default: true },
+    user: {
+      type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
+    stock: { type: Boolean, default: true },
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
 )
 
-const Products = model<productInterface>('products', ProductSchema)
+const Products = model<TProductInterface>('products', ProductSchema)
 
 export default Products

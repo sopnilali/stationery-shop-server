@@ -1,14 +1,21 @@
-import { productInterface, searchTermQueryInterface } from './product.interface'
+import mongoose from 'mongoose';
+import { TProductInterface } from './product.interface'
 import Products from './product.model'
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 
 const createProductsfromDB = async (
-  payload: productInterface
-): Promise<productInterface> => {
+  payload: TProductInterface
+): Promise<TProductInterface> => {
   const result = await Products.create(payload)
   return result
 }
-const getAllProductsfromDB = async (query: searchTermQueryInterface) => {
-  const result = await Products.find(query)
+const getAllProductsfromDB = async (query: any, validSortBy: any, sortOrder: any) => {
+   // Fetch blogs from DB with sorting
+   const result = await Products.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
+    path: 'user',
+
+})
   return result
 }
 const getProductByIdfromDB = async (productid: string) => {
@@ -18,7 +25,7 @@ const getProductByIdfromDB = async (productid: string) => {
 
 const updateProductByIdfromDB = async (
   productid: string,
-  payload: productInterface
+  payload: TProductInterface
 ) => {
   const result = await Products.findByIdAndUpdate(productid, payload, {
     new: true,

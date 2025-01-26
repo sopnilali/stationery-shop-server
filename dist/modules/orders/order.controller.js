@@ -17,6 +17,9 @@ exports.OrderController = void 0;
 const product_model_1 = __importDefault(require("../products/product.model"));
 const order_model_1 = __importDefault(require("./order.model"));
 const order_service_1 = require("./order.service");
+const blog_service_1 = require("../blog/blog.service");
+const http_status_1 = __importDefault(require("http-status"));
+const AppError_1 = __importDefault(require("../../errors/AppError"));
 const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const order = req.body;
@@ -40,7 +43,7 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         productdetails.quantity -= quantity;
         if (productdetails.quantity === 0) {
             // if product quantity is zero then product inStock to false
-            productdetails.inStock = false;
+            productdetails.stock = false;
         }
         yield productdetails.save(); // update inventory
         // Create the order
@@ -70,6 +73,38 @@ const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const stackerror = new Error();
         res.status(500).json({
             message: 'An error occurred while creating the order',
+            status: false,
+            error: error,
+            stack: stackerror.stack,
+        });
+    }
+});
+const deleteBlogContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const blogid = req.params.id;
+        const result = yield blog_service_1.blogServices.deleteBlogContentByIdfromDB(blogid);
+        if (!(result === null || result === void 0 ? void 0 : result._id)) {
+            throw new AppError_1.default(http_status_1.default.NOT_FOUND, " blog not found");
+        }
+        const statuscode = 200;
+        res.status(200).json({
+            success: true,
+            message: 'Blog deleted successfully',
+            statusCode: statuscode,
+        });
+        if (result) {
+            const statuscode = 200;
+            res.status(200).json({
+                success: true,
+                message: 'Blog deleted successfully',
+                statusCode: statuscode,
+            });
+        }
+    }
+    catch (error) {
+        const stackerror = new Error();
+        res.json({
+            message: 'An error occurred while deleting blog',
             status: false,
             error: error,
             stack: stackerror.stack,

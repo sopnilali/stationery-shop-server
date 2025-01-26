@@ -1,86 +1,137 @@
 //req and response from hit use
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import { ProductService } from './product.service'
+import catchAsync from '../../utils/catchAsync'
+import { IQuery } from './product.interface'
+import sendResponse from '../../utils/sendResponse'
+import httpStatus from 'http-status'
+import { User } from '../user/user.model'
 
-const createNewProducts = async (req: Request, res: Response) => {
-  try {
-    const productData = req.body
-    const result = await ProductService.createProductsfromDB(productData)
+const createNewProducts = catchAsync(async (req: Request, res: Response) => {
+  const { name,brand, category, description, price, productImg, quantity, stock } = req.body
 
-    if (result) {
-      res.status(201).json({
-        message: 'Product created successfully',
-        status: true,
-        data: {
-          _id: result._id,
-          name: result.name,
-          brand: result.brand,
-          price: result.price,
-          category: result.category,
-          description: result.description,
-          quantity: result.quantity,
-          inStock: result.inStock,
-          createdAt: result.createdAt,
-          updatedAt: result.updatedAt,
-        },
-      })
-    }
-  } catch (error) {
-    const stackerror = new Error()
-    res.json({
-      message: 'An error occurred while adding the product',
-      status: false,
-      error: error,
-      stack: stackerror.stack,
-    })
+  const userId = await User.findOne({ email: req.user.userEmail })
+
+  const productData: any = {
+    name,
+    brand,
+    category,
+    description,
+    price,
+    productImg,
+    quantity,
+    user: userId?._id,
+    stock,
   }
-}
 
-const GetallProducts = async (req: Request, res: Response) => {
-  try {
-    const productData = req.query
 
-    // Retrieve products based on query parameters
-    const products = await ProductService.getAllProductsfromDB(productData)
+  const result = await ProductService.createProductsfromDB(productData)
 
-    // Success response
-    if (!products || products.length === 0) {
-      res.status(404).json({
-        message: 'Products Not Found ',
-        status: false,
-        data: [],
-      })
-    } else {
-      res.json({
-        message: 'Products retrieved Successfully ',
-        status: true,
-        data: products.map((product) => {
-          return {
-            _id: product._id,
-            name: product.name,
-            brand: product.brand,
-            price: product.price,
-            category: product.category,
-            description: product.description,
-            quantity: product.quantity,
-            inStock: product.inStock,
-            createdAt: product.createdAt,
-            updatedAt: product.updatedAt,
-          }
-        }),
-      })
-    }
-  } catch (error: any) {
-    // Handle unexpected errors
-    const stackerror = new Error()
-    res.json({
-      message: 'An error occurred while retrieving products',
-      status: false,
-      error: error,
-      stack: stackerror.stack,
-    })
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product is created succesfully',
+    data: {
+      _id: result._id,
+      name: result.name,
+      category: result.category,
+      description: result.description,
+      price: result.price,
+      productImg: result.productImg,
+      quantity: result.quantity,
+      user: result.user,
+      stock: result.stock,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    },
+  })
+})
+
+
+const getAllProducts: RequestHandler = catchAsync(async (req, res) => {
+  const { search, sortBy = 'createdAt', sortOrder = 'desc', filter } = req.query;
+
+  // Build query object
+  let query: IQuery = {};
+
+  if (search) {
+    query.$or = [
+      { title: { $regex: search as string, $options: 'i' } },
+      { category: { $regex: search as string, $options: 'i' } },
+    ];
   }
-}
+
+
+  if (filter) {
+    query.author = filter as string;
+  }
+  // Ensure sortBy is a string
+  const validSortBy = typeof sortBy === 'string' ? sortBy : 'createdAt';
+
+  const result = await ProductService.getAllProductsfromDB(query, validSortBy, sortOrder)
+  // Response
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: " Product fetched successfully",
+    data: result.map((blog) => ({
+      _id: blog._id,
+      name: blog.name,
+      category: blog.category,
+      description: blog.description,
+      price: blog.price,
+      quantity: blog.quantity,
+      stock: blog.stock,
+      user: blog.user,
+    })),
+  });
+})
+
+// const GetallProducts = async (req: Request, res: Response) => {
+//   try {
+//     const productData = req.query
+
+//     // Retrieve products based on query parameters
+//     const products = await ProductService.getAllProductsfromDB(productData)
+
+//     // Success response
+//     if (!products || products.length === 0) {
+//       res.status(404).json({
+//         message: 'Products Not Found ',
+//         status: false,
+//         data: [],
+//       })
+//     } else {
+//       res.json({
+//         message: 'Products retrieved Successfully ',
+//         status: true,
+//         data: products.map((product) => {
+//           return {
+//             _id: product._id,
+//             name: product.name,
+//             brand: product.brand,
+//             price: product.price,
+//             category: product.category,
+//             description: product.description,
+//             quantity: product.quantity,
+//             inStock: product.inStock,
+//             createdAt: product.createdAt,
+//             updatedAt: product.updatedAt,
+//           }
+//         }),
+//       })
+//     }
+//   } catch (error: any) {
+//     // Handle unexpected errors
+//     const stackerror = new Error()
+//     res.json({
+//       message: 'An error occurred while retrieving products',
+//       status: false,
+//       error: error,
+//       stack: stackerror.stack,
+//     })
+//   }
+// }
 
 const getProductByID = async (req: Request, res: Response) => {
   try {
@@ -94,14 +145,12 @@ const getProductByID = async (req: Request, res: Response) => {
         data: {
           _id: product._id,
           name: product.name,
-          brand: product.brand,
-          price: product.price,
           category: product.category,
           description: product.description,
+          price: product.price,
           quantity: product.quantity,
-          inStock: product.inStock,
-          createdAt: product.createdAt,
-          updatedAt: product.updatedAt,
+          stock: product.stock,
+          user: product.user
         },
       })
     }
@@ -131,14 +180,12 @@ const updateProduct = async (req: Request, res: Response) => {
         data: {
           _id: result._id,
           name: result.name,
-          brand: result.brand,
           price: result.price,
           category: result.category,
           description: result.description,
           quantity: result.quantity,
-          inStock: result.inStock,
-          createdAt: result.createdAt,
-          updatedAt: result.updatedAt,
+          stock: result.stock,
+          user: result.user,
         },
       })
     }
@@ -177,7 +224,7 @@ const deleteProductbyID = async (req: Request, res: Response) => {
 
 export const productController = {
   createNewProducts,
-  GetallProducts,
+  getAllProducts,
   getProductByID,
   updateProduct,
   deleteProductbyID,

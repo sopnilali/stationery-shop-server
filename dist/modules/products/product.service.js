@@ -18,8 +18,11 @@ const createProductsfromDB = (payload) => __awaiter(void 0, void 0, void 0, func
     const result = yield product_model_1.default.create(payload);
     return result;
 });
-const getAllProductsfromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.find(query);
+const getAllProductsfromDB = (query, validSortBy, sortOrder) => __awaiter(void 0, void 0, void 0, function* () {
+    // Fetch blogs from DB with sorting
+    const result = yield product_model_1.default.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
+        path: 'user',
+    });
     return result;
 });
 const getProductByIdfromDB = (productid) => __awaiter(void 0, void 0, void 0, function* () {

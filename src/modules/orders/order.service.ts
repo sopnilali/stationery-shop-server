@@ -6,10 +6,17 @@ const createOrdersfromDB = async (payload: OrderRequest) => {
   return result
 }
 
+const deleteOrdersfromDB = async (orderid: any) => {
+  const result = await Orders.deleteOne(orderid);
+  return result
+}
+
 const getAllOrdersfromDB = async () => {
   const result = await Orders.find().populate('product') // find all orders from the database
   return result
 }
+
+
 
 const CalculateOrderRevenuefromDB = async () => {
   const result = await Orders.aggregate([
@@ -31,5 +38,6 @@ const CalculateOrderRevenuefromDB = async () => {
 export const OrderService = {
   createOrdersfromDB,
   getAllOrdersfromDB,
+  deleteOrdersfromDB,
   CalculateOrderRevenuefromDB,
 }
