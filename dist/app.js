@@ -12,7 +12,10 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 // CORS
 app.use((0, cors_1.default)({
-    origin: ['https://stationery-shop-client-six.vercel.app/', "http://localhost:5173/"], // Allow requests from this specific origi,
+    origin: [
+        'https://stationery-shop-client-six.vercel.app',
+        'http://localhost:5173'
+    ], // Allow requests from this specific origi,
     credentials: true
 }));
 // application routes

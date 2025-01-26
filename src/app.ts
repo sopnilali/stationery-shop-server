@@ -10,7 +10,10 @@ app.use(express.json())
 // CORS
 
 app.use(cors({
-    origin: ['https://stationery-shop-client-six.vercel.app/', "http://localhost:5173/"], // Allow requests from this specific origi,
+    origin: [
+        'https://stationery-shop-client-six.vercel.app',
+        'http://localhost:5173'
+    ], // Allow requests from this specific origi,
     credentials: true 
 },
 ));
