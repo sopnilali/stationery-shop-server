@@ -35,6 +35,7 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     res.cookie('refreshToken', refreshToken, {
         secure: config_1.default.node_env === 'production',
         httpOnly: true,
+        expires: new Date(Date.now() + 3600000 * 24 * 7),
     });
     // Send response with accessToken
     (0, sendResponse_1.default)(res, {

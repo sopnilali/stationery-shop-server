@@ -13,6 +13,7 @@ const loginUser = catchAsync(async (req, res) => {
   res.cookie('refreshToken', refreshToken, {
     secure: config.node_env === 'production',
     httpOnly: true,
+    expires: new Date(Date.now() + 3600000 * 24 * 7),
   });
 
 

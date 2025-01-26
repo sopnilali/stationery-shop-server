@@ -26,7 +26,7 @@ app.use('/api/v2', router);
 app.get('/', (req: Request, res: Response) => {
     res.json({
         status: true,
-        message: 'Welcome to Blog Project API',
+        message: 'Welcome to Blog Project API!',
     })
 })
 
