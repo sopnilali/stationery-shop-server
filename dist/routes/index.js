@@ -6,6 +6,7 @@ const blog_router_1 = require("../modules/blog/blog.router");
 const auth_router_1 = require("../modules/auth/auth.router");
 const admin_router_1 = require("../modules/admin/admin.router");
 const product_router_1 = require("../modules/products/product.router");
+const order_router_1 = require("../modules/orders/order.router");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
@@ -19,6 +20,10 @@ const moduleRoutes = [
     {
         path: "/products",
         routes: product_router_1.productRoutes
+    },
+    {
+        path: "/orders",
+        routes: order_router_1.orderRoutes
     },
     {
         path: "/auth",
