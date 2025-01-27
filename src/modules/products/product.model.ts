@@ -21,11 +21,11 @@ const ProductSchema = new Schema(
       required: true,
       min: [0, 'Quantity must be a positive number'], // if quantity is negative then quantity must be positive message show.
     },
-    user: {
+    author: {
       type: Schema.Types.ObjectId,
         ref: 'users',
     },
-    stock: { type: Boolean, default: true },
+    stock: { type: Boolean, default: true},
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
 )

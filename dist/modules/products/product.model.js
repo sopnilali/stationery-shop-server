@@ -20,7 +20,7 @@ const ProductSchema = new mongoose_1.Schema({
         required: true,
         min: [0, 'Quantity must be a positive number'], // if quantity is negative then quantity must be positive message show.
     },
-    user: {
+    author: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'users',
     },

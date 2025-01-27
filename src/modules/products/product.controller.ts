@@ -2,13 +2,13 @@
 import { Request, RequestHandler, Response } from 'express'
 import { ProductService } from './product.service'
 import catchAsync from '../../utils/catchAsync'
-import { IQuery } from './product.interface'
+import { IFilter, IQuery } from './product.interface'
 import sendResponse from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { User } from '../user/user.model'
 
 const createNewProducts = catchAsync(async (req: Request, res: Response) => {
-  const { name,brand, category, description, price, productImg, quantity, stock } = req.body
+  const { name, brand, category, description, price, productImg, quantity, stock } = req.body
 
   const userId = await User.findOne({ email: req.user.userEmail })
 
@@ -20,7 +20,7 @@ const createNewProducts = catchAsync(async (req: Request, res: Response) => {
     price,
     productImg,
     quantity,
-    user: userId?._id,
+    author: userId?._id,
     stock,
   }
 
@@ -34,12 +34,13 @@ const createNewProducts = catchAsync(async (req: Request, res: Response) => {
     data: {
       _id: result._id,
       name: result.name,
+      brand: result.brand,
       category: result.category,
       description: result.description,
       price: result.price,
       productImg: result.productImg,
       quantity: result.quantity,
-      user: result.user,
+      author: result.author,
       stock: result.stock,
       createdAt: result.createdAt,
       updatedAt: result.updatedAt,
@@ -48,23 +49,43 @@ const createNewProducts = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+interface Query {
+  [key: string]: any;
+}
+
+
 const getAllProducts: RequestHandler = catchAsync(async (req, res) => {
-  const { search, sortBy = 'createdAt', sortOrder = 'desc', filter } = req.query;
+  const { search, sortBy = 'createdAt', sortOrder = 'desc', filter, minPrice, maxPrice, category, availability } = req.query;
 
   // Build query object
-  let query: IQuery = {};
+  let query: Query = {};
 
   if (search) {
     query.$or = [
-      { title: { $regex: search as string, $options: 'i' } },
-      { category: { $regex: search as string, $options: 'i' } },
+      { name: { $regex: search, $options: 'i' } },
+      { category: { $regex: search, $options: 'i' } },
+      { author: { $regex: search, $options: 'i' } },
     ];
   }
-
 
   if (filter) {
     query.author = filter as string;
   }
+
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = parseFloat(minPrice as string);
+    if (maxPrice) query.price.$lte = parseFloat(maxPrice as string);
+  }
+
+  if (category) {
+    query.category = category as string;
+  }
+
+  if (availability) {
+    query.stock = availability as any;
+  }
+  
   // Ensure sortBy is a string
   const validSortBy = typeof sortBy === 'string' ? sortBy : 'createdAt';
 
@@ -73,19 +94,24 @@ const getAllProducts: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Product fetched successfully",
-    data: result.map((blog) => ({
-      _id: blog._id,
-      name: blog.name,
-      category: blog.category,
-      description: blog.description,
-      price: blog.price,
-      quantity: blog.quantity,
-      stock: blog.stock,
-      user: blog.user,
+    message: "Product fetched successfully",
+    data: result.map((product) => ({
+      _id: product._id,
+      name: product.name,
+      brand: product.brand,
+      category: product.category,
+      description: product.description,
+      price: product.price,
+      productImg: product.productImg,
+      quantity: product.quantity,
+      author: product.author,
+      stock: product.stock,
+      createdAt: product.createdAt,
+      updatedAt: product.updatedAt,
     })),
   });
-})
+});
+
 
 // const GetallProducts = async (req: Request, res: Response) => {
 //   try {
@@ -145,12 +171,16 @@ const getProductByID = async (req: Request, res: Response) => {
         data: {
           _id: product._id,
           name: product.name,
+          brand: product.brand,
           category: product.category,
           description: product.description,
           price: product.price,
+          productImg: product.productImg,
           quantity: product.quantity,
+          author: product.author,
           stock: product.stock,
-          user: product.user
+          createdAt: product.createdAt,
+          updatedAt: product.updatedAt,
         },
       })
     }
@@ -184,8 +214,9 @@ const updateProduct = async (req: Request, res: Response) => {
           category: result.category,
           description: result.description,
           quantity: result.quantity,
+
           stock: result.stock,
-          user: result.user,
+          author: result.author,
         },
       })
     }

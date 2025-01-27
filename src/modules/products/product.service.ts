@@ -13,13 +13,11 @@ const createProductsfromDB = async (
 const getAllProductsfromDB = async (query: any, validSortBy: any, sortOrder: any) => {
    // Fetch blogs from DB with sorting
    const result = await Products.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
-    path: 'user',
-
-})
+    path: 'author'})
   return result
 }
 const getProductByIdfromDB = async (productid: string) => {
-  const result = await Products.findById(productid)
+  const result = await Products.findById(productid).populate({path: 'author'})
   return result
 }
 

@@ -21,12 +21,12 @@ const createProductsfromDB = (payload) => __awaiter(void 0, void 0, void 0, func
 const getAllProductsfromDB = (query, validSortBy, sortOrder) => __awaiter(void 0, void 0, void 0, function* () {
     // Fetch blogs from DB with sorting
     const result = yield product_model_1.default.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
-        path: 'user',
+        path: 'author'
     });
     return result;
 });
 const getProductByIdfromDB = (productid) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.findById(productid);
+    const result = yield product_model_1.default.findById(productid).populate({ path: 'author' });
     return result;
 });
 const updateProductByIdfromDB = (productid, payload) => __awaiter(void 0, void 0, void 0, function* () {

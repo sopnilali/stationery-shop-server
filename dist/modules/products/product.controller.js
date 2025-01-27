@@ -29,7 +29,7 @@ const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void
         price,
         productImg,
         quantity,
-        user: userId === null || userId === void 0 ? void 0 : userId._id,
+        author: userId === null || userId === void 0 ? void 0 : userId._id,
         stock,
     };
     const result = yield product_service_1.ProductService.createProductsfromDB(productData);
@@ -40,12 +40,13 @@ const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void
         data: {
             _id: result._id,
             name: result.name,
+            brand: result.brand,
             category: result.category,
             description: result.description,
             price: result.price,
             productImg: result.productImg,
             quantity: result.quantity,
-            user: result.user,
+            author: result.author,
             stock: result.stock,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
@@ -53,17 +54,31 @@ const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void
     });
 }));
 const getAllProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { search, sortBy = 'createdAt', sortOrder = 'desc', filter } = req.query;
+    const { search, sortBy = 'createdAt', sortOrder = 'desc', filter, minPrice, maxPrice, category, availability } = req.query;
     // Build query object
     let query = {};
     if (search) {
         query.$or = [
-            { title: { $regex: search, $options: 'i' } },
+            { name: { $regex: search, $options: 'i' } },
             { category: { $regex: search, $options: 'i' } },
+            { author: { $regex: search, $options: 'i' } },
         ];
     }
     if (filter) {
         query.author = filter;
+    }
+    if (minPrice || maxPrice) {
+        query.price = {};
+        if (minPrice)
+            query.price.$gte = parseFloat(minPrice);
+        if (maxPrice)
+            query.price.$lte = parseFloat(maxPrice);
+    }
+    if (category) {
+        query.category = category;
+    }
+    if (availability) {
+        query.stock = availability;
     }
     // Ensure sortBy is a string
     const validSortBy = typeof sortBy === 'string' ? sortBy : 'createdAt';
@@ -72,16 +87,20 @@ const getAllProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: " Product fetched successfully",
-        data: result.map((blog) => ({
-            _id: blog._id,
-            name: blog.name,
-            category: blog.category,
-            description: blog.description,
-            price: blog.price,
-            quantity: blog.quantity,
-            stock: blog.stock,
-            user: blog.user,
+        message: "Product fetched successfully",
+        data: result.map((product) => ({
+            _id: product._id,
+            name: product.name,
+            brand: product.brand,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            productImg: product.productImg,
+            quantity: product.quantity,
+            author: product.author,
+            stock: product.stock,
+            createdAt: product.createdAt,
+            updatedAt: product.updatedAt,
         })),
     });
 }));
@@ -138,12 +157,16 @@ const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 data: {
                     _id: product._id,
                     name: product.name,
+                    brand: product.brand,
                     category: product.category,
                     description: product.description,
                     price: product.price,
+                    productImg: product.productImg,
                     quantity: product.quantity,
+                    author: product.author,
                     stock: product.stock,
-                    user: product.user
+                    createdAt: product.createdAt,
+                    updatedAt: product.updatedAt,
                 },
             });
         }
@@ -175,7 +198,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     description: result.description,
                     quantity: result.quantity,
                     stock: result.stock,
-                    user: result.user,
+                    author: result.author,
                 },
             });
         }
