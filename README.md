@@ -8,7 +8,7 @@
 
  <strong>Live: URL</strong> : https://stationery-shop-server.vercel.app/
 
- <strong>Video Explanation</strong>: https://drive.google.com/file/d/1fwnAzfQg8IbDaHqYAYTKJoC4eAn1c-IR/view
+ <strong>Video Explanation</strong>: https://drive.google.com/file/d/1T1gZgC2GYnobyTviYXZuG1ZKCiOfoCfy/view?usp=sharing
 
 <h2>Technology Used ⚙️</h2>
 <li>Node</li>
