@@ -38,6 +38,9 @@ const userSchema = new mongoose_1.Schema({
         enum: ['admin', 'user'], // user role admin or user
         default: 'user', // default user role
     },
+    phone: { type: String, required: true, default: "N/A" },
+    address: { type: String, required: true, default: "N/A" },
+    city: { type: String, required: true, default: "N/A" },
     isBlocked: {
         type: Boolean,
         default: false,

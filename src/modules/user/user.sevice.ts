@@ -14,21 +14,20 @@ const getUserFromDB = async () => {
 }
 
 const getUserByEmailFromDB = async (userEmail: string, role: string) => {
-    
-    // const decoded = verifyToken(token, config.jwt_access_secret as string);
 
-    // const { userEmail, role} = decoded
-
-    let result = null
-
-    if (role === 'user') {
-        result = await User.findOne({ email: userEmail })
-    }
-    if (role === 'admin') {
-        result = await User.findOne({ email: userEmail })
-    } 
+    const result = await User.findOne({ email: userEmail })
     return result;
 
+}
+
+const updateUserContentFromDB = async (
+    id: string,
+    payload: TUser
+) => {
+    const result = await User.findByIdAndUpdate(id, payload, {
+        new: true,
+    })
+    return result
 }
 
 
@@ -36,5 +35,6 @@ const getUserByEmailFromDB = async (userEmail: string, role: string) => {
 export const userServices = {
     createUserFromDB,
     getUserFromDB,
-    getUserByEmailFromDB
+    getUserByEmailFromDB,
+    updateUserContentFromDB
 }

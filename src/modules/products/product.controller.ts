@@ -8,7 +8,7 @@ import httpStatus from 'http-status'
 import { User } from '../user/user.model'
 
 const createNewProducts = catchAsync(async (req: Request, res: Response) => {
-  const { name, brand, category, description, price, productImg, quantity, stock } = req.body
+  const { name, brand, category, description, price, productImg, stock } = req.body
 
   const userId = await User.findOne({ email: req.user.userEmail })
 
@@ -19,12 +19,9 @@ const createNewProducts = catchAsync(async (req: Request, res: Response) => {
     description,
     price,
     productImg,
-    quantity,
     author: userId?._id,
     stock,
   }
-
-
   const result = await ProductService.createProductsfromDB(productData)
 
   sendResponse(res, {
@@ -39,7 +36,6 @@ const createNewProducts = catchAsync(async (req: Request, res: Response) => {
       description: result.description,
       price: result.price,
       productImg: result.productImg,
-      quantity: result.quantity,
       author: result.author,
       stock: result.stock,
       createdAt: result.createdAt,
@@ -103,7 +99,6 @@ const getAllProducts: RequestHandler = catchAsync(async (req, res) => {
       description: product.description,
       price: product.price,
       productImg: product.productImg,
-      quantity: product.quantity,
       author: product.author,
       stock: product.stock,
       createdAt: product.createdAt,
@@ -176,7 +171,6 @@ const getProductByID = async (req: Request, res: Response) => {
           description: product.description,
           price: product.price,
           productImg: product.productImg,
-          quantity: product.quantity,
           author: product.author,
           stock: product.stock,
           createdAt: product.createdAt,
@@ -210,13 +204,15 @@ const updateProduct = async (req: Request, res: Response) => {
         data: {
           _id: result._id,
           name: result.name,
-          price: result.price,
+          brand: result.brand,
           category: result.category,
           description: result.description,
-          quantity: result.quantity,
-
-          stock: result.stock,
+          price: result.price,
+          productImg: result.productImg,
           author: result.author,
+          stock: result.stock,
+          createdAt: result.createdAt,
+          updatedAt: result.updatedAt,
         },
       })
     }

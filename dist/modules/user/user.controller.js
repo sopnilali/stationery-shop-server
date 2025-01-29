@@ -46,7 +46,6 @@ const GetMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
     //   token = req.headers.authorization.split(" ")[1];
     // }
     const { userEmail, role } = req.user;
-    console.log(userEmail, role);
     const result = yield user_sevice_1.userServices.getUserByEmailFromDB(userEmail, role);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
@@ -55,8 +54,33 @@ const GetMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
         data: result,
     });
 }));
+const updateUserContent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userData = req.body;
+        const userId = req.params.id;
+        const result = yield user_sevice_1.userServices.updateUserContentFromDB(userId, userData);
+        if (result) {
+            (0, sendResponse_1.default)(res, {
+                success: true,
+                message: 'User updated successfully',
+                statusCode: http_status_1.default.OK,
+                data: result,
+            });
+        }
+    }
+    catch (error) {
+        const stackerror = new Error();
+        res.json({
+            message: 'An error occurred while updating product',
+            status: false,
+            error: error,
+            stack: stackerror.stack,
+        });
+    }
+});
 exports.UserController = {
     createUser,
     GetUsers,
-    GetMe
+    GetMe,
+    updateUserContent
 };

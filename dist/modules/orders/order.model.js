@@ -1,48 +1,44 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const validator_1 = __importDefault(require("validator"));
-const orderSchema = new mongoose_1.Schema({
-    email: {
-        type: String,
-        required: [true, 'Email is required'], // required email field
-        validate: {
-            validator: (value) => validator_1.default.isEmail(value), // email validation function to validate email
-            message: '{VALUE} is not a valid email type',
-        },
-    },
-    product: {
+const OrderSchema = new mongoose_1.Schema({
+    user: {
         type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, 'product is required'],
-        ref: 'products',
-    },
-    quantity: {
-        type: Number,
+        ref: "users",
         required: true,
-        min: [0, 'Quantity must be a positive number'],
-        validate: {
-            validator: function (value) {
-                return value >= 0; // Ensure quantity is non-negative
-            },
-            message: 'Quantity must be a positive number',
-        },
     },
+    products: [
+        {
+            product: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: "products",
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true,
+            },
+        },
+    ],
     totalPrice: {
         type: Number,
-        min: [0, 'TotalPrice must be a positive number'], // Ensure totalPrice is non-negative
-        required: true,
     },
     status: {
         type: String,
-        enum: ['Pending', 'Shipped', 'Delivered', 'Cancelled'],
-        default: 'Pending',
-    }
-}, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
-// versionKey: false // You should be aware of the outcome after set to false
-// Automatically adds `createdAt` and `updatedAt`
-);
-const Orders = (0, mongoose_1.model)('orders', orderSchema);
-exports.default = Orders;
+        enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
+        default: "Pending",
+    },
+    transaction: {
+        id: String,
+        transactionStatus: String,
+        bank_status: String,
+        sp_code: String,
+        sp_message: String,
+        method: String,
+        date_time: String,
+    },
+}, {
+    timestamps: true,
+});
+const Order = (0, mongoose_1.model)("orders", OrderSchema);
+exports.default = Order;

@@ -15,16 +15,11 @@ const ProductSchema = new mongoose_1.Schema({
     },
     description: { type: String, required: true },
     productImg: { type: String, default: 'https://i.ibb.co.com/F40Mt4Y/touchicon-180.png' },
-    quantity: {
-        type: Number,
-        required: true,
-        min: [0, 'Quantity must be a positive number'], // if quantity is negative then quantity must be positive message show.
-    },
     author: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'users',
     },
-    stock: { type: Boolean, default: true },
+    stock: { type: Number, required: true, default: 0 },
 }, { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
 );
 const Products = (0, mongoose_1.model)('products', ProductSchema);

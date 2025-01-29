@@ -140,7 +140,7 @@ const updateBlogContent: RequestHandler = async (req, res) => {
           author: result.author,
         },
       });
-    }
+}
 
     
 

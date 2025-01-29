@@ -1,50 +1,50 @@
 import { model, Schema } from 'mongoose'
-import validator from 'validator'
-import { OrderRequest } from './order.interface'
+import { IOrder } from './order.interface';
 
-const orderSchema = new Schema(
+
+const OrderSchema = new Schema<IOrder>(
   {
-    email: {
-      type: String,
-      required: [true, 'Email is required'], // required email field
-      validate: {
-        validator: (value: string) => validator.isEmail(value), // email validation function to validate email
-        message: '{VALUE} is not a valid email type',
-      },
-    },
-    product: {
+    user: {
       type: Schema.Types.ObjectId,
-      required: [true, 'product is required'],
-      ref: 'products',
-    },
-    quantity: {
-      type: Number,
+      ref: "users",
       required: true,
-      min: [0, 'Quantity must be a positive number'],
-      validate: {
-        validator: function (value: number): boolean {
-          return value >= 0 // Ensure quantity is non-negative
-        },
-        message: 'Quantity must be a positive number',
-      },
     },
+    products: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "products",
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
     totalPrice: {
       type: Number,
-      min: [0, 'TotalPrice must be a positive number'], // Ensure totalPrice is non-negative
-      required: true,
     },
     status: {
       type: String,
-      enum: ['Pending', 'Shipped', 'Delivered', 'Cancelled'],
-      default: 'Pending',
-    }
+      enum: ["Pending", "Paid", "Shipped", "Completed", "Cancelled"],
+      default: "Pending",
+    },
+    transaction: {
+      id: String,
+      transactionStatus: String,
+      bank_status: String,
+      sp_code: String,
+      sp_message: String,
+      method: String,
+      date_time: String,
+    },
   },
-  { timestamps: true } // Automatically adds `createdAt` and `updatedAt`
-  // versionKey: false // You should be aware of the outcome after set to false
+  {
+    timestamps: true,
+  }
+);
 
-  // Automatically adds `createdAt` and `updatedAt`
-)
+const Order = model<IOrder>("orders", OrderSchema);
 
-const Orders = model<OrderRequest>('orders', orderSchema)
-
-export default Orders
+export default Order;

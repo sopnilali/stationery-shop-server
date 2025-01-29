@@ -36,8 +36,13 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'Password do not matched');
     //create token and sent to the  client
     const jwtPayload = {
-        userEmail: user.email,
+        _id: user._id,
+        name: user.name,
+        address: user.address,
+        phone: user.phone,
+        city: user.city,
         role: user.role,
+        userEmail: user.email,
     };
     const accessToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
     const refreshToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_refresh_secret, config_1.default.jwt_refresh_expires_in);

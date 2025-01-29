@@ -19,7 +19,7 @@ const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
 const user_model_1 = require("../user/user.model");
 const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, brand, category, description, price, productImg, quantity, stock } = req.body;
+    const { name, brand, category, description, price, productImg, stock } = req.body;
     const userId = yield user_model_1.User.findOne({ email: req.user.userEmail });
     const productData = {
         name,
@@ -28,7 +28,6 @@ const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void
         description,
         price,
         productImg,
-        quantity,
         author: userId === null || userId === void 0 ? void 0 : userId._id,
         stock,
     };
@@ -45,7 +44,6 @@ const createNewProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void
             description: result.description,
             price: result.price,
             productImg: result.productImg,
-            quantity: result.quantity,
             author: result.author,
             stock: result.stock,
             createdAt: result.createdAt,
@@ -96,7 +94,6 @@ const getAllProducts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
             description: product.description,
             price: product.price,
             productImg: product.productImg,
-            quantity: product.quantity,
             author: product.author,
             stock: product.stock,
             createdAt: product.createdAt,
@@ -162,7 +159,6 @@ const getProductByID = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     description: product.description,
                     price: product.price,
                     productImg: product.productImg,
-                    quantity: product.quantity,
                     author: product.author,
                     stock: product.stock,
                     createdAt: product.createdAt,
@@ -193,12 +189,15 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: {
                     _id: result._id,
                     name: result.name,
-                    price: result.price,
+                    brand: result.brand,
                     category: result.category,
                     description: result.description,
-                    quantity: result.quantity,
-                    stock: result.stock,
+                    price: result.price,
+                    productImg: result.productImg,
                     author: result.author,
+                    stock: result.stock,
+                    createdAt: result.createdAt,
+                    updatedAt: result.updatedAt,
                 },
             });
         }

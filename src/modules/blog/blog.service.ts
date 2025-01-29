@@ -11,9 +11,7 @@ const getBlogContentFromDB = async (query: any, validSortBy: any, sortOrder: any
 
     // Fetch blogs from DB with sorting
     const allblogs = await Blog.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
-        path: 'author',
-
-    })
+        path: 'author'})
 
     return allblogs
 

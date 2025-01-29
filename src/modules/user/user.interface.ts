@@ -1,16 +1,22 @@
-import { Model } from "mongoose";
-import { USER_ROLE } from "./user.constant";
+import { Document, Model } from "mongoose";
+import { USER_ROLE, UserRole } from "./user.constant";
 
-export interface TUser {
-  name: string
-  email: string
+
+export type TUser = {
+  _id: string;
+  name: string;
+  email: string;
   photoURL: string
-  password: string
+  password: string;
   role: 'admin' | 'user'
+  phone: string;
+  address: string;
+  city: string;
   isBlocked: boolean,
-  createdAt: NativeDate
-  updatedAt: NativeDate
+  createdAt: Date;
+  updatedAt: Date;
 }
+
 
 export interface UserModel extends Model<TUser> {
   //instance methods for checking if the user exist

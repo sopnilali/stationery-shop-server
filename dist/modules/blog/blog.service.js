@@ -21,7 +21,7 @@ const createBlogContentFromDB = (payload) => __awaiter(void 0, void 0, void 0, f
 const getBlogContentFromDB = (query, validSortBy, sortOrder) => __awaiter(void 0, void 0, void 0, function* () {
     // Fetch blogs from DB with sorting
     const allblogs = yield blog_model_1.default.find(query).sort({ [validSortBy]: sortOrder === 'asc' ? 1 : -1 }).populate({
-        path: 'author',
+        path: 'author'
     });
     return allblogs;
 });

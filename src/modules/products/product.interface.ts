@@ -2,14 +2,13 @@ import { Types } from "mongoose"
 
 export interface TProductInterface {
   _id: string
-  name: string
-  brand: string;
-  price: number
-  category: string
-  description: string
-  productImg: string
-  quantity: number
-  stock: boolean
+  name?: string
+  brand?: string;
+  price?: number
+  category?: string
+  description?: string
+  productImg?: string
+  stock?: number
   author: Types.ObjectId | undefined
   createdAt: NativeDate
   updatedAt: NativeDate
@@ -20,7 +19,7 @@ export interface searchTermQueryInterface {
   brand?: string
   category?: string
   name?: string
-  stock?:boolean
+  stock?:number
   author?: string
 }
 

@@ -20,19 +20,18 @@ const getUserFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getUserByEmailFromDB = (userEmail, role) => __awaiter(void 0, void 0, void 0, function* () {
-    // const decoded = verifyToken(token, config.jwt_access_secret as string);
-    // const { userEmail, role} = decoded
-    let result = null;
-    if (role === 'user') {
-        result = yield user_model_1.User.findOne({ email: userEmail });
-    }
-    if (role === 'admin') {
-        result = yield user_model_1.User.findOne({ email: userEmail });
-    }
+    const result = yield user_model_1.User.findOne({ email: userEmail });
+    return result;
+});
+const updateUserContentFromDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.User.findByIdAndUpdate(id, payload, {
+        new: true,
+    });
     return result;
 });
 exports.userServices = {
     createUserFromDB,
     getUserFromDB,
-    getUserByEmailFromDB
+    getUserByEmailFromDB,
+    updateUserContentFromDB
 };
