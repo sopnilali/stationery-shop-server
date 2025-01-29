@@ -24,7 +24,7 @@ app.use('/api/v2', routes_1.default);
 app.get('/', (req, res) => {
     res.json({
         status: true,
-        message: 'Welcome to Blog Project API!',
+        message: 'Welcome to Stationary Shop API!',
     });
 });
 app.use(globalErrorhandler_1.default);
