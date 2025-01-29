@@ -66,15 +66,26 @@ src/
 ├── server.ts
 </pre>
 
-# Stationary Shop Product Model 🚟
+# Product Model 🚟
 <pre>
     name: { type: String, required: true },
     brand: { type: String, required: true },
-    price: { type: Number,required: true},
-    category: {type: String,required: true},
+    price: {
+      type: Number,
+      required: true,
+      min: [0, 'Price must be a positive number'], // if price is negative then price must be positive message show.
+    },
+    category: {
+      type: String,
+      required: true,
+    },
     description: { type: String, required: true },
-    quantity: { type: Number,required: true,},
-    inStock: { type: Boolean, default: true },
+    productImg: { type: String, default: 'https://i.ibb.co.com/F40Mt4Y/touchicon-180.png'},
+    author: {
+      type: Schema.Types.ObjectId,
+        ref: 'users',
+    },
+    stock: { type: Number, required: true, default: 0 }
 </pre>
  
 # Order Model 🚟
@@ -147,28 +158,6 @@ name: {
       type: Boolean,
       default: false,
     }
-</pre>
-
-# Product Model 
-<pre>
-name: { type: String, required: true },
-    brand: { type: String, required: true },
-    price: {
-      type: Number,
-      required: true,
-      min: [0, 'Price must be a positive number'], // if price is negative then price must be positive message show.
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    description: { type: String, required: true },
-    productImg: { type: String, default: 'https://i.ibb.co.com/F40Mt4Y/touchicon-180.png'},
-    author: {
-      type: Schema.Types.ObjectId,
-        ref: 'users',
-    },
-    stock: { type: Number, required: true, default: 0 }
 </pre>
 
 # Blog Model
